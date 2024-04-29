@@ -1,15 +1,16 @@
 # MRT-Travel-Platform
 
-1. npx create-next-app
+## Create the Project
+npx create-next-app
 
-## Setup UI/UX
-2. yarn add @mui/icons-material
-3. yarn add @mui/material
-4. npx shadcn-ui@latest init
+### Setup UI/UX
+yarn add @mui/icons-material
+yarn add @mui/material
+npx shadcn-ui@latest init
 
-## Setup Drizzle
-5. yarn add drizzle-orm postgres
-6. yarn add -D drizzle-kit
+### Setup Drizzle
+yarn add drizzle-orm postgres
+yarn add -D drizzle-kit
 
-## Setup Next Auth
-7. yarn add next-auth
+### Setup Next Auth
+yarn add next-auth
