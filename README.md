@@ -10,3 +10,6 @@
 ## Setup Drizzle
 5. yarn add drizzle-orm postgres
 6. yarn add -D drizzle-kit
+
+## Setup Next Auth
+7. yarn add next-auth
