@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 
+import { signIn } from "next-auth/react";
+import { publicEnv } from "@/lib/env/public";
+
 // Run: npx shadcn-ui@latest add button
 import { Button } from "@/components/ui/button";
 // Run: npx shadcn-ui@latest add card
@@ -9,15 +12,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import AuthInput from "./AuthInput";
 
+
 function AuthForm() {
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: sign in logic
+    signIn("credentials", {
+      email,
+      username,
+      password,
+      callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
+    });
   };
   return (
     <Card className="min-w-[300px]">
@@ -30,6 +41,13 @@ function AuthForm() {
 
       <CardContent>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+          <AuthInput
+            label="Email"
+            type="text"
+            value={email}
+            setValue={setEmail}
+          />
+
           <AuthInput
             label="Username"
             type="text"
