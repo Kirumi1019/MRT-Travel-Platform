@@ -17,7 +17,7 @@ export default CredentialsProvider({
   async authorize(credentials) {
     let validatedCredentials: {
       email: string;
-      username?: string;
+      username: string;
       password: string;
     };
 
