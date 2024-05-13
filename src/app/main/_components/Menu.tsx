@@ -13,65 +13,12 @@ async function Menu() {
   const id = session.user.id;
   return (
     <>
-      <div className="w-full">
+      {/* <div className="w-full">
         <Link href={`/mainPage/${id}/MyInfo`}>
           <Button>My Info</Button>
         </Link>
-      </div>
-      <div className="w-full">
-        Shop something
-      </div>
-      <div className="w-full">
-        <Link href={'/mainPage/Products'}>
-          <Button>All Products</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/Orders`}>
-          <Button>My Orders</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/Reports`}>
-          <Button>Report Seller</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        Sell something
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/MyProducts`}>
-          <Button>My Products</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/AddProduct`}>
-          <Button>Add Product</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/MyOrders`}>
-          <Button>My Orders</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/Transactions`}>
-          <Button>Sold Items</Button>
-        </Link>
-      </div>
-
-      <div className="w-full">
-        <Link href={`/mainPage/${id}/Reports`}>
-          <Button>Report Buyer</Button>
-        </Link>
-      </div>
+      </div> */}
+      <div>Buttons</div>
     </>
 
 
