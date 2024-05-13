@@ -13,12 +13,11 @@ async function Menu() {
   const id = session.user.id;
   return (
     <>
-      {/* <div className="w-full">
-        <Link href={`/mainPage/${id}/MyInfo`}>
+      <div className="w-full">
+        <Link href={`/main/${id}/MyInfo`}>
           <Button>My Info</Button>
         </Link>
-      </div> */}
-      <div>Buttons</div>
+      </div>
     </>
 
 

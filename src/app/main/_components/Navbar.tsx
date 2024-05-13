@@ -10,7 +10,7 @@ import Menu from "./Menu";
 async function Navbar() {
   const session = await auth();
 
-  console.log(session);
+  // console.log(session);
   if (!session || !session?.user?.id) {
     redirect(publicEnv.NEXT_PUBLIC_BASE_URL);
   }
