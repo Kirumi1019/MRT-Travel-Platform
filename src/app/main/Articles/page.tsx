@@ -1,11 +1,11 @@
-async function Article() {
+async function Articles() {
     return(
         <>
           <div>
-            Article
+            Articles
           </div>
         </>
     )
 }
 
-export default Article;
+export default Articles;
