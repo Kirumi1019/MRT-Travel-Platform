@@ -18,6 +18,26 @@ async function Menu() {
           <Button>My Info</Button>
         </Link>
       </div>
+      <div className="w-full">
+        <Link href={`/main/Articles`}>
+          <Button>View Articles</Button>
+        </Link>
+      </div>
+      <div className="w-full">
+        <Link href={`/main/Article_Create`}>
+          <Button>Create Article</Button>
+        </Link>
+      </div>
+      <div className="w-full">
+        <Link href={`/main/MRT_Route`}>
+          <Button>MRT Route</Button>
+        </Link>
+      </div>
+      <div className="w-full">
+        <Link href={`/main/MRT_Stations`}>
+          <Button>MRT Stations</Button>
+        </Link>
+      </div>
     </>
 
 
