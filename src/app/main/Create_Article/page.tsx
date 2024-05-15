@@ -1,4 +1,4 @@
-async function Article() {
+async function Create_Article() {
     return(
         <>
           <div>
@@ -8,4 +8,4 @@ async function Article() {
     )
 }
 
-export default Article;
+export default Create_Article;

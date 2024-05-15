@@ -24,7 +24,7 @@ async function Menu() {
         </Link>
       </div>
       <div className="w-full">
-        <Link href={`/main/Article_Create`}>
+        <Link href={`/main/Create_Article`}>
           <Button>Create Article</Button>
         </Link>
       </div>

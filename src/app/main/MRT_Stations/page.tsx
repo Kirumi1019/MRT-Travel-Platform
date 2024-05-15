@@ -1,4 +1,4 @@
-async function Article() {
+async function MRT_Stations() {
     return(
         <>
           <div>
@@ -8,4 +8,4 @@ async function Article() {
     )
 }
 
-export default Article;
+export default MRT_Stations;
