@@ -81,5 +81,8 @@ export const mrtLikedTable = pgTable(
       onUpdate: "cascade",
     }),
     mrtStation: varchar("mrt_station", {length: 20}).notNull(),
-  }
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.mrtStation, table.userId] }),  
+  })
 )
