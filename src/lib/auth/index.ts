@@ -14,8 +14,8 @@ export const {
   providers: [CredentialsProvider],
   callbacks: {
     async session({ session, token }) {
-      const username = token.name || session?.user?.username;
-      if (!username) return session;
+      const email = token.email || session?.user?.email;
+      if (!email) return session;
 
       const [user] = await db
         .select({
@@ -23,7 +23,7 @@ export const {
           username: usersTable.username,
         })
         .from(usersTable)
-        .where(eq(usersTable.username, username))
+        .where(eq(usersTable.email, email))
         .execute();
 
       return {
@@ -36,6 +36,7 @@ export const {
       };
     },
   },
+  
   pages: {
     signIn: "/Error",
   },
