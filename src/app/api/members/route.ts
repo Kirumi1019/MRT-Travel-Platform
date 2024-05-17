@@ -8,10 +8,10 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
 const postUserInfoRequestSchema = z.object({
-  email: z.string().max(100),
+  email: z.string().email(),
   username: z.string().max(100),
   password: z.string().max(100).optional(),
-  displayId: z.string(),
+  displayId: z.string().uuid(),
 });
 
 type PostInfoRequest = z.infer<typeof postUserInfoRequestSchema>;
