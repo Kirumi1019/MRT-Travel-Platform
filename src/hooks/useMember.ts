@@ -3,8 +3,36 @@ import { useState } from "react";
 import {useRouter} from 'next/navigation';
 
 export default function useMember() {
+  const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const getMember = async({
+    email,
+    username,
+  } : {
+    email: string,
+    username: string,
+  }) => {
+    setLoading(true)
+
+    const res = await fetch(`/api/register`, {
+      method: "PUT",
+      body: JSON.stringify({
+        email,
+        username,
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json();
+      setErrorMessage(body.error);
+      // throw new Error(body.error);
+      
+    }
+
+    router.refresh();
+    setLoading(false);
+  };
 
   const updateMember = async ({
     email,
@@ -43,7 +71,9 @@ export default function useMember() {
   
   return {
     updateMember,
+    getMember,
     loading,
+    errorMessage
   };
 }
 

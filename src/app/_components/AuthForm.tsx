@@ -13,10 +13,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AuthInput from "./AuthInput";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@radix-ui/react-toast";
+import useMember from "@/hooks/useMember";
 
 
 function AuthForm() {
-  const { toast } = useToast()
+  const { toast } = useToast();
+  const {getMember,loading, errorMessage}= useMember();
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -26,6 +28,32 @@ function AuthForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: sign in logic
+    if(!isSignIn)
+    {
+      try {
+        getMember({
+          email,
+          username,
+        })
+      }catch(e){
+        toast({
+          variant: "destructive",
+          title: "SignIn Failed",
+          action: <ToastAction altText="Try again">Got it</ToastAction>,
+        })
+      }
+
+      if(errorMessage)
+      {
+        toast({
+          variant: "destructive",
+          title: errorMessage,
+          action: <ToastAction altText="Try again">Got it</ToastAction>,
+        })
+      }
+      return null;
+    }
+    
 
     if(!isSignIn && password != confirmPassword){
       toast({
@@ -33,16 +61,16 @@ function AuthForm() {
         title: "Uh oh! Something went wrong.",
         description: "\"Password\" doesn't match with \"Confirmed Password\"",
         action: <ToastAction altText="Try again">Got it</ToastAction>,
-      })
-    }
-    else{
-      signIn("credentials", {
-        email,
-        username,
-        password,
-        callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
       });
+      return null;
     }
+
+    signIn("credentials", {
+      email,
+      username,
+      password,
+      callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
+    });
 
     
   };
@@ -86,10 +114,13 @@ function AuthForm() {
                 setValue={setConfirmPassword}
               />
             )}
-
-            <Button type="submit" className="w-full">
+            
+            {!loading && (<Button type="submit" className="w-full">
               Sign {isSignIn ? "In" : "Up"}
-            </Button>
+            </Button>)}
+            {loading && (<Button className="w-full">
+              Hold On...
+            </Button>)}
           </form>
 
           {/* <div className="flex w-full items-center gap-1 py-2">
@@ -127,3 +158,4 @@ function AuthForm() {
 }
 
 export default AuthForm;
+
