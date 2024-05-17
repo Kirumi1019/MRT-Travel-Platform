@@ -25,7 +25,8 @@ export const {
         .from(usersTable)
         .where(eq(usersTable.email, email))
         .execute();
-
+      
+      // frontend able to use the info
       return {
         ...session,
         user: {
@@ -35,9 +36,45 @@ export const {
         },
       };
     },
+    async jwt({ token, account, user }) {
+      // Sign in with social account, e.g. GitHub, Google, etc.
+      if (!account) return token;
+      const { name, email } = token;
+      const provider = account.provider;
+      if (!name || !email || !provider) return token;
+
+      token.id = user.id;
+      token.accessToken = account.access_token;
+
+      // // Check if the email has been registered
+      // const [existedUser] = await db
+      //   .select({
+      //     id: usersTable.displayId,
+      //   })
+      //   .from(usersTable)
+      //   .where(eq(usersTable.email, email.toLowerCase()))
+      //   .execute();
+      // if (existedUser) return token;
+      // if (provider !== "github") return token;
+
+      // // Sign up
+      // await db.insert(usersTable).values({
+      //   username: name,
+      //   email: email.toLowerCase(),
+      //   provider,
+      // });
+
+      return token;
+    },
   },
   
   pages: {
-    signIn: "/Error",
+    signIn: "/",
   },
+  
+  session: {
+    strategy: 'jwt',
+  },
+
+  secret: process.env.AUTH_SECRET,
 });
