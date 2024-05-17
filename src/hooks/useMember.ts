@@ -6,7 +6,7 @@ export default function useMember() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const getMember = async({
+  const registerMember = async({
     email,
     username,
   } : {
@@ -20,6 +20,37 @@ export default function useMember() {
       body: JSON.stringify({
         email,
         username,
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json();
+      setErrorMessage(body.error);
+      // throw new Error(body.error);
+      
+    }
+
+    router.refresh();
+    setLoading(false);
+  };
+
+  const loginMember = async({
+    email,
+    username,
+    password,
+  } : {
+    email: string,
+    username: string,
+    password?: string,
+  }) => {
+    setLoading(true)
+
+    const res = await fetch(`/api/login`, {
+      method: "PUT",
+      body: JSON.stringify({
+        email,
+        username,
+        password
       }),
     });
 
@@ -71,7 +102,8 @@ export default function useMember() {
   
   return {
     updateMember,
-    getMember,
+    registerMember,
+    loginMember,
     loading,
     errorMessage
   };

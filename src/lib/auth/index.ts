@@ -43,7 +43,7 @@ export const {
       const provider = account.provider;
       if (!name || !email || !provider) return token;
 
-      token.id = user.id;
+      token.email = user.email;
       token.accessToken = account.access_token;
 
       // // Check if the email has been registered

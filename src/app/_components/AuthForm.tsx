@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { signIn } from "next-auth/react";
 import { publicEnv } from "@/lib/env/public";
@@ -18,23 +18,42 @@ import useMember from "@/hooks/useMember";
 
 function AuthForm() {
   const { toast } = useToast();
-  const {getMember,loading, errorMessage}= useMember();
+  const {registerMember,loginMember ,loading, errorMessage}= useMember();
   const [isSignIn, setIsSignIn] = useState<boolean>(true);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  
+  /*
+  Since async function will be skipped and the code below will continue be executed,
+  errorMessage from the server will not trigger rerender 
+  and the errorMessage will only be toasted the next rerender.
+  However, using useEffect can help. Whenever errorMessage changed, useEffect will be called.
+  Then, the toast will be called.
+  */ 
+  useEffect(() => {
+    if(errorMessage)
+      {
+        toast({
+          variant: "destructive",
+          title: errorMessage,
+          action: <ToastAction altText="Try again">Got it</ToastAction>,
+        });
+      }
+  }, [errorMessage, toast]) 
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: sign in logic
+    // Sign Up logic
+    // Email Already Registered
     if(!isSignIn)
     {
       try {
-        getMember({
+        await registerMember({
           email,
           username,
-        })
+        });
       }catch(e){
         toast({
           variant: "destructive",
@@ -42,20 +61,11 @@ function AuthForm() {
           action: <ToastAction altText="Try again">Got it</ToastAction>,
         })
       }
-
-      if(errorMessage)
-      {
-        toast({
-          variant: "destructive",
-          title: errorMessage,
-          action: <ToastAction altText="Try again">Got it</ToastAction>,
-        })
-      }
       return null;
     }
-    
-
+    // Password Not Matched
     if(!isSignIn && password != confirmPassword){
+      
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
@@ -65,6 +75,26 @@ function AuthForm() {
       return null;
     }
 
+    // Sign In logic ; See api/login for details
+    if(isSignIn){
+      try {
+        await loginMember({
+          email,
+          username,
+          password,
+        });        
+      }catch(e){
+        toast({
+          variant: "destructive",
+          title: "SignIn Failed",
+          action: <ToastAction altText="Try again">Got it</ToastAction>,
+        })
+      }
+      
+      return null;
+    }  
+
+    
     signIn("credentials", {
       email,
       username,
