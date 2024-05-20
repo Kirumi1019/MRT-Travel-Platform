@@ -1,34 +1,38 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import bcrypt from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { eq, is } from "drizzle-orm";
 
 import { db } from "@/db";
 import { usersTable } from "@/db/schema";
 import { authSchema } from "@/validators/auth";
 
+// This is where SignIn refrenced in AuthForm
 export default CredentialsProvider({
   name: "credentials",
   credentials: {
     email: { label: "Email", type: "text" },
-    username: { label: "Userame", type: "text", optional: true },
+    username: { label: "Userame", type: "text" },
     password: { label: "Password", type: "password" },
+    isSignIn: {label: "SignInBoolean", type: "text"}
   },
   async authorize(credentials) {
     let validatedCredentials: {
       email: string;
       username: string;
       password: string;
+      isSignIn: string;
     };
 
     try {
       validatedCredentials = authSchema.parse(credentials);
     } catch (error) {
+      console.log(credentials);
+      console.log(error)
       console.log("Wrong credentials. Try again.");
       return null;
     }
-    const { email, username, password } = validatedCredentials;
-
+    const { email, username, password, isSignIn } = validatedCredentials;
     const [existedUser] = await db
       .select({
         id: usersTable.displayId,
@@ -40,9 +44,9 @@ export default CredentialsProvider({
       .from(usersTable)
       .where(eq(usersTable.email, validatedCredentials.email.toLowerCase()))
       .execute();
-    if (!existedUser) {
+    if (!existedUser && isSignIn == 'false' ) {
       // Sign up
-      if (!username) {
+      if (!username || !email || !password) {
         console.log("Name is required.");
         return null;
       }

@@ -49,6 +49,7 @@ function AuthForm() {
     // Email Already Registered
     if(!isSignIn)
     {
+      
       try {
         await registerMember({
           email,
@@ -56,13 +57,15 @@ function AuthForm() {
         });
       }catch(e){
         toast({
-          variant: "destructive",
+          variant: "destructive", 
           title: "SignIn Failed",
           action: <ToastAction altText="Try again">Got it</ToastAction>,
         })
+        return null;
       }
-      return null;
+      
     }
+    
     // Password Not Matched
     if(!isSignIn && password != confirmPassword){
       
@@ -89,16 +92,17 @@ function AuthForm() {
           title: "SignIn Failed",
           action: <ToastAction altText="Try again">Got it</ToastAction>,
         })
+        return null;
       }
       
-      return null;
+      
     }  
-
     
     signIn("credentials", {
       email,
       username,
       password,
+      isSignIn,
       callbackUrl: `${publicEnv.NEXT_PUBLIC_BASE_URL}/main`,
     });
 
