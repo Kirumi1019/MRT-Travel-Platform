@@ -30,14 +30,15 @@ export async function PUT(request: NextRequest) {
   
 
     try{
-      const exsitedUser = await db.select().from(usersTable)
+      const [exsitedUser] = await db.select().from(usersTable)
       .where(and(eq(usersTable.email,email),
                 eq(usersTable.username, username)))
-      
       if(exsitedUser)
       {
         return NextResponse.json({ error: "Email Already Registered" }, { status: 400 });
       }
+
+      
   } 
   catch (error) {
     console.log(error);
