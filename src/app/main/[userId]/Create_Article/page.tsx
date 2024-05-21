@@ -5,6 +5,7 @@ import { UUID } from "crypto";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import useMRT from "@/hooks/useMRT";
+import useArticleMRT from "@/hooks/useArticleMRT";
 
 type Props = {
   params: {
@@ -14,12 +15,13 @@ type Props = {
 
 function Create_Article({ params: { userId } }: Props) {
   const { createArticle, loading } = useArticle();
+  const { createMrtTag } = useArticleMRT();
   const { getMRTList } = useMRT();
   const initialised = useRef(false);
   const [articleContent, setArticleContent] = useState("");
   const [articleTitle, setArticleTitle] = useState("");
   const [mrtStations, setMrtStations] = useState<Station[]>([]);
-  const [selectedStation, setSelectedStation] = useState("");
+  const [selectedStation, setSelectedStation] = useState<string[]>([]);
 
   interface Station {
     displayId: UUID;
@@ -52,7 +54,6 @@ function Create_Article({ params: { userId } }: Props) {
           );
 
           setMrtStations(formattedMrtList);
-          setSelectedStation(formattedMrtList[0].mrtName);
         } catch (e) {
           console.error(e);
         }
@@ -64,7 +65,7 @@ function Create_Article({ params: { userId } }: Props) {
 
   const handleSubmit = async () => {
     try {
-      await createArticle({
+      const body = await createArticle({
         authorId: userId,
         articleContent: articleContent,
         articleTitle: articleTitle,
@@ -102,7 +103,8 @@ function Create_Article({ params: { userId } }: Props) {
         ></textarea>
 
         <h1 className="m-4">Station</h1>
-        <select
+        {/* <select
+          disabled={loading}
           onChange={(e) => setSelectedStation(e.target.value)}
           value={selectedStation}
           className="m-4 w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
@@ -114,9 +116,29 @@ function Create_Article({ params: { userId } }: Props) {
               {item.mrtName}
             </option>
           ))}
-        </select>
+        </select> */}
+        {mrtStations.map((item) => (
+          <div className="m-4 w-1/2" key={item.displayId}>
+            <label htmlFor={item.mrtId}>
+              {item.mrtId} {item.mrtName}
+            </label>
+            <Input
+              type="checkbox"
+              id={item.mrtId}
+              value={item.mrtName}
+              onChange={(e) => {
+                if (!selectedStation.includes(item.mrtName)) {
+                  setSelectedStation((list) => [...list, e.target.value]);
+                } else
+                  setSelectedStation((list) =>
+                    list.filter((stationName) => stationName != item.mrtName)
+                  );
+              }}
+            ></Input>
+          </div>
+        ))}
         <Button disabled={loading} className="m-4">
-          Finish
+          Share
         </Button>
       </form>
     </>

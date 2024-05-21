@@ -52,7 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "autoprefixer": "^10.0.1",
-    "drizzle-kit": "^0.20.9-1dc10f5",
+    "drizzle-kit": "^0.20.18",
     "eslint": "^8.53.0",
     "eslint-config-next": "14.0.1",
     "eslint-config-prettier": "^9.0.0",

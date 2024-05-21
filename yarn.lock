@@ -166,13 +166,6 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@drizzle-team/studio@^0.0.37":
-  version "0.0.37"
-  resolved "https://registry.npmjs.org/@drizzle-team/studio/-/studio-0.0.37.tgz"
-  integrity sha512-LZyAPGJBX43jsrVZh7+w1Jig/BC6PJx63ReHUYK+GRQYNY9UJNlPXmn1uC/LMRX+A7JwYM4Sr4Fg/hnJSqlfgA==
-  dependencies:
-    superjson "^2.2.1"
-
 "@emotion/babel-plugin@^11.11.0":
   version "11.11.0"
   resolved "https://registry.npmjs.org/@emotion/babel-plugin/-/babel-plugin-11.11.0.tgz"
@@ -364,6 +357,16 @@
   version "0.1.6"
   resolved "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.1.6.tgz"
   integrity sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==
+
+"@hono/node-server@^1.9.0":
+  version "1.11.1"
+  resolved "https://registry.npmjs.org/@hono/node-server/-/node-server-1.11.1.tgz"
+  integrity sha512-GW1Iomhmm1o4Z+X57xGby8A35Cu9UZLL7pSMdqDBkD99U5cywff8F+8hLk5aBTzNubnsFAvWQ/fZjNwPsEn9lA==
+
+"@hono/zod-validator@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/@hono/zod-validator/-/zod-validator-0.2.1.tgz"
+  integrity sha512-HFoxln7Q6JsE64qz2WBS28SD33UB2alp3aRKmcWnNLDzEL1BLsWfbdX6e1HIiUprHYTIXf5y7ax8eYidKUwyaA==
 
 "@hookform/resolvers@^3.4.0":
   version "3.4.0"
@@ -1546,13 +1549,14 @@ dreamopt@~0.8.0:
   dependencies:
     wordwrap ">=0.0.2"
 
-drizzle-kit@^0.20.9-1dc10f5:
-  version "0.20.9-1dc10f5"
-  resolved "https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.20.9-1dc10f5.tgz"
-  integrity sha512-5gvCfZqIa4lC84Y4/THn7I3Uh/VvDftYxVgqeTe8o650w+H0CTyasYdZzz4TDNGGBC+RqtWG+sQRymwdPG8vVQ==
+drizzle-kit@^0.20.18:
+  version "0.20.18"
+  resolved "https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.20.18.tgz"
+  integrity sha512-fLTwcnLqtBxGd+51H/dEm9TC0FW6+cIX/RVPyNcitBO77X9+nkogEfMAJebpd/8Yl4KucmePHRYRWWvUlW0rqg==
   dependencies:
-    "@drizzle-team/studio" "^0.0.37"
     "@esbuild-kit/esm-loader" "^2.5.5"
+    "@hono/node-server" "^1.9.0"
+    "@hono/zod-validator" "^0.2.0"
     camelcase "^7.0.1"
     chalk "^5.2.0"
     commander "^9.4.1"
@@ -1561,9 +1565,11 @@ drizzle-kit@^0.20.9-1dc10f5:
     esbuild-register "^3.5.0"
     glob "^8.1.0"
     hanji "^0.0.5"
+    hono "^4.1.4"
     json-diff "0.9.0"
     minimatch "^7.4.3"
     semver "^7.5.4"
+    superjson "^2.2.1"
     zod "^3.20.2"
 
 drizzle-orm@^0.30.10:
@@ -2360,6 +2366,11 @@ hoist-non-react-statics@^3.3.1:
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+hono@^4.1.4, hono@>=3.9.0:
+  version "4.3.9"
+  resolved "https://registry.npmjs.org/hono/-/hono-4.3.9.tgz"
+  integrity sha512-6c5LVE23HnIS8iBhY+XPmYJlPeeClznOi7mBNsAsJCgxo8Ciz75LTjqRUf5wv4RYq8kL+1KPLUZHCtKmbZssNg==
 
 ignore@^5.2.0, ignore@^5.2.4:
   version "5.3.0"
@@ -4110,7 +4121,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zod@^3.20.2, zod@^3.23.8:
+zod@^3.19.1, zod@^3.20.2, zod@^3.23.8:
   version "3.23.8"
   resolved "https://registry.npmjs.org/zod/-/zod-3.23.8.tgz"
   integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
