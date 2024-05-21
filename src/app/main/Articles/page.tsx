@@ -9,7 +9,6 @@ function Articles() {
     authorId: UUID;
     articleContent: string;
     articleTitle: string;
-    mrtStation: string;
   }
 
   interface Data {
@@ -18,7 +17,6 @@ function Articles() {
       authorId: UUID;
       articleContent: string;
       articleTitle: string;
-      mrtStation: string;
     }[];
   }
 
@@ -33,14 +31,13 @@ function Articles() {
         try {
           const body = await getArticles();
           const fetchedData: Data = await body.json();
-          console.log(fetchedData.articleList);
+          //console.log(fetchedData.articleList);
           const formattedArticleList: Article[] = fetchedData.articleList.map(
             (item) => ({
               displayId: item.displayId,
               authorId: item.authorId,
               articleContent: item.articleContent,
               articleTitle: item.articleTitle,
-              mrtStation: item.mrtStation,
             })
           );
 
@@ -58,9 +55,7 @@ function Articles() {
     <>
       <div>Articles</div>
       {articleList.map((item) => (
-        <div>
-          {item.articleTitle} {item.mrtStation}
-        </div>
+        <div key={item.displayId}>{item.articleTitle}</div>
       ))}
     </>
   );

@@ -24,10 +24,10 @@ export async function POST(request: NextRequest) {
   }
 
   const { authorId, articleContent, articleTitle } = data as PostArticleRequest;
-
+  let generatedId = "";
   try {
     await db.transaction(async (tx) => {
-      await tx
+      const [createdArticle] = await tx
         .insert(articleTable)
         .values({
           authorId,
@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
           articleTitle,
         })
         .returning();
+      generatedId = createdArticle.displayId;
     });
   } catch (error) {
     return NextResponse.json(
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return new NextResponse("OK", { status: 200 });
+  return new NextResponse(generatedId, { status: 200 });
 }
 
 export async function GET() {

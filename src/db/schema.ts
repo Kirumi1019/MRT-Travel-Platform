@@ -1,4 +1,12 @@
-import { index, pgTable, timestamp, uuid, varchar, primaryKey, integer } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+  primaryKey,
+  integer,
+} from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable(
   "users",
@@ -17,25 +25,29 @@ export const usersTable = pgTable(
   (table) => ({
     displayIdIndex: index("userId_index").on(table.displayId),
     emailIndex: index("email_index").on(table.email),
-  }),
+  })
 );
 
 export const articleTable = pgTable(
   "articles",
   {
     displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
-    authorId: uuid("author_id").notNull().references(()=>usersTable.displayId,{
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-    articleContent: varchar("article_content", {length: 500}).notNull(),
-    articleTitle: varchar("article_title", {length: 100}).notNull(),
-    articleCreatedDate: timestamp("article_created_date").defaultNow().notNull(),
+    authorId: uuid("author_id")
+      .notNull()
+      .references(() => usersTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    articleContent: varchar("article_content", { length: 500 }).notNull(),
+    articleTitle: varchar("article_title", { length: 100 }).notNull(),
+    articleCreatedDate: timestamp("article_created_date")
+      .defaultNow()
+      .notNull(),
   },
   (table) => ({
     displayIdIndex: index("articleId_index").on(table.displayId),
   })
-)
+);
 
 export const articleMRTTable = pgTable(
   "article_mrt",
@@ -52,42 +64,49 @@ export const articleMRTTable = pgTable(
   (table) => ({
     pk: primaryKey({ columns: [table.articleId, table.mrtDisplayId] }),  
   })
-)
+);
 
-export const responseTable = pgTable(
-  "article_response",
-  {
-    displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
-    articleId: uuid("article_id").notNull().references(()=>articleTable.displayId,{
+export const responseTable = pgTable("article_response", {
+  displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
+  articleId: uuid("article_id")
+    .notNull()
+    .references(() => articleTable.displayId, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    userId: uuid("user_id").notNull().references(()=>usersTable.displayId,{
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => usersTable.displayId, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    rate: integer("article_rate").notNull(),
-    responseContent: varchar("response_content", {length: 200}),
-    responseCreatedDate: timestamp("response_created_date").defaultNow().notNull(),
-  }
-)
+  rate: integer("article_rate").notNull(),
+  responseContent: varchar("response_content", { length: 200 }),
+  responseCreatedDate: timestamp("response_created_date")
+    .defaultNow()
+    .notNull(),
+});
 
 export const articleLikeTable = pgTable(
   "article_liked",
   {
-    articleId: uuid("article_id").notNull().references(()=>articleTable.displayId,{
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-    userId: uuid("user_id").notNull().references(()=>usersTable.displayId,{
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
+    articleId: uuid("article_id")
+      .notNull()
+      .references(() => articleTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => usersTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.articleId, table.userId] }),  
+    pk: primaryKey({ columns: [table.articleId, table.userId] }),
   })
-)
+);
 
 export const mrtStationTable = pgTable(
   "mrt_station",
@@ -135,11 +154,9 @@ export const mrtLikedTable = pgTable(
       mrtStationTable.displayId,{
         onDelete: "cascade",
         onUpdate: "cascade",
-      }
-    ),
+      }),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.mrtDisplayId, table.userId] }),  
   })
-)
-
+);
