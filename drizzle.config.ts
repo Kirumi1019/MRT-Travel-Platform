@@ -10,9 +10,9 @@ if (!process.env.POSTGRES_URL) {
 }
 
 export default {
-  dialect: "postgresql", //for drizzle-kit 0.21
+  //dialect: "postgresql", //for drizzle-kit 0.21
   schema: "./src/db/schema.ts",
   out: "./drizzle",
-  //driver: "pg",
-  dbCredentials: { url: process.env.POSTGRES_URL as string }, //connectionString for previous versions of drizzle-kit
+  driver: "pg",
+  dbCredentials: { connectionString: process.env.POSTGRES_URL as string }, //connectionString for previous versions of drizzle-kit
 } satisfies Config;
