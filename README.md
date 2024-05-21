@@ -2,6 +2,8 @@ Press ctrl+shift+V to preview in VSCode
 
 # Setup Guide
 
+make a duplication of `.env.example` and renamed it `.env.local`
+
 After downloading the codes
 
 1. enter `yarn` in terminal
