@@ -30,11 +30,27 @@ export const articleTable = pgTable(
     }),
     articleContent: varchar("article_content", {length: 500}).notNull(),
     articleTitle: varchar("article_title", {length: 100}).notNull(),
-    mrtStation: varchar("mrt_station", {length: 20}).notNull(),
     articleCreatedDate: timestamp("article_created_date").defaultNow().notNull(),
   },
   (table) => ({
     displayIdIndex: index("articleId_index").on(table.displayId),
+  })
+)
+
+export const articleMRTTable = pgTable(
+  "article_mrt",
+  {
+    articleId: uuid("article_id").notNull().references(()=>articleTable.displayId,{
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    mrtName: uuid("mrt_name").notNull().references(()=>mrtStationTable.mrtName,{
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.articleId, table.mrtName] }),  
   })
 )
 
