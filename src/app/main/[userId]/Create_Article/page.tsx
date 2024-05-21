@@ -70,6 +70,7 @@ function Create_Article({ params: { userId } }: Props) {
         articleContent: articleContent,
         articleTitle: articleTitle,
       });
+      console.log(body);
     } catch (e) {
       console.error(e);
     }

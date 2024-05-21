@@ -34,6 +34,7 @@ export default function useArticle() {
     }
     router.refresh();
     setLoading(false);
+    return res;
   };
 
   const getArticles = async () => {
