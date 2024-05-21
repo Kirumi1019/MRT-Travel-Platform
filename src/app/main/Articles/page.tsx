@@ -1,11 +1,69 @@
-async function Articles() {
-    return(
-        <>
-          <div>
-            Articles
-          </div>
-        </>
-    )
+"use client";
+import useArticle from "@/hooks/useArticle";
+import { UUID } from "crypto";
+import { useState, useEffect, useRef } from "react";
+
+function Articles() {
+  interface Article {
+    displayId: UUID;
+    authorId: UUID;
+    articleContent: string;
+    articleTitle: string;
+    mrtStation: string;
+  }
+
+  interface Data {
+    articleList: {
+      displayId: UUID;
+      authorId: UUID;
+      articleContent: string;
+      articleTitle: string;
+      mrtStation: string;
+    }[];
+  }
+
+  const { getArticles, loading } = useArticle();
+  const [articleList, setArticleList] = useState<Article[]>([]);
+  const initialised = useRef(false);
+
+  useEffect(() => {
+    if (!initialised.current) {
+      initialised.current = true;
+      const fetchedArticleList = async () => {
+        try {
+          const body = await getArticles();
+          const fetchedData: Data = await body.json();
+          console.log(fetchedData.articleList);
+          const formattedArticleList: Article[] = fetchedData.articleList.map(
+            (item) => ({
+              displayId: item.displayId,
+              authorId: item.authorId,
+              articleContent: item.articleContent,
+              articleTitle: item.articleTitle,
+              mrtStation: item.mrtStation,
+            })
+          );
+
+          setArticleList(formattedArticleList);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchedArticleList();
+    }
+  }, []);
+
+  return (
+    <>
+      <div>Articles</div>
+      {articleList.map((item) => (
+        <div>
+          {item.articleTitle} {item.mrtStation}
+        </div>
+      ))}
+    </>
+  );
 }
 
 export default Articles;

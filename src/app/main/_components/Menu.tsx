@@ -24,7 +24,7 @@ async function Menu() {
         </Link>
       </div>
       <div className="w-full">
-        <Link href={`/main/Create_Article`}>
+        <Link href={`/main/${id}/Create_Article`}>
           <Button>Create Article</Button>
         </Link>
       </div>
@@ -39,8 +39,6 @@ async function Menu() {
         </Link>
       </div>
     </>
-
-
   );
 }
 
