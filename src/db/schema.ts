@@ -52,17 +52,21 @@ export const articleTable = pgTable(
 export const articleMRTTable = pgTable(
   "article_mrt",
   {
-    articleId: uuid("article_id").notNull().references(()=>articleTable.displayId,{
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-    mrtDisplayId: uuid("mrt_display_id").notNull().references(()=>mrtStationTable.displayId,{
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
+    articleId: uuid("article_id")
+      .notNull()
+      .references(() => articleTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    mrtDisplayId: uuid("mrt_display_id")
+      .notNull()
+      .references(() => mrtStationTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.articleId, table.mrtDisplayId] }),  
+    pk: primaryKey({ columns: [table.articleId, table.mrtDisplayId] }),
   })
 );
 
@@ -108,55 +112,54 @@ export const articleLikeTable = pgTable(
   })
 );
 
-export const mrtStationTable = pgTable(
-  "mrt_station",
-  {
-    displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
-    mrtName: varchar("mrt_name",{length: 15}).notNull().unique(),
-  }
-)
+export const mrtStationTable = pgTable("mrt_station", {
+  displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
+  mrtName: varchar("mrt_name", { length: 15 }).notNull().unique(),
+});
 
 // 捷運線車站代號、對應的捷運線
-export const mrtStationIDTable = pgTable(
-  "mrt_station_id",
-  {
-    mrtStationId: varchar("mrt_station_id",{length: 10}).notNull().unique().primaryKey(),
-    lineId: uuid("line_id").notNull().references(()=>mrtStationLineTable.displayId,{
+export const mrtStationIDTable = pgTable("mrt_station_id", {
+  mrtStationId: varchar("mrt_station_id", { length: 10 })
+    .notNull()
+    .unique()
+    .primaryKey(),
+  lineId: uuid("line_id")
+    .notNull()
+    .references(() => mrtStationLineTable.displayId, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    mrtDisplayId: uuid("mrt_id").notNull().references(()=>mrtStationTable.displayId,{
+  mrtDisplayId: uuid("mrt_id")
+    .notNull()
+    .references(() => mrtStationTable.displayId, {
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-  }
-)
+});
 
 // 捷運線名字
-export const mrtStationLineTable = pgTable(
-  "mrt_station_line",
-  {
-    displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
-    lineName: varchar("line_name",{length: 10}).notNull().unique(),
-  }
-)
+export const mrtStationLineTable = pgTable("mrt_station_line", {
+  displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
+  lineName: varchar("line_name", { length: 10 }).notNull().unique(),
+});
 
 export const mrtLikedTable = pgTable(
   "mrt_liked",
   {
-    userId: uuid("user_id").notNull().references(()=>
-      usersTable.displayId,{
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-    mrtDisplayId: uuid("mrt_id").notNull()
-    .references(()=>
-      mrtStationTable.displayId,{
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => usersTable.displayId, {
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      }),
+    mrtDisplayId: uuid("mrt_id")
+      .notNull()
+      .references(() => mrtStationTable.displayId, {
         onDelete: "cascade",
         onUpdate: "cascade",
       }),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.mrtDisplayId, table.userId] }),  
+    pk: primaryKey({ columns: [table.mrtDisplayId, table.userId] }),
   })
 );

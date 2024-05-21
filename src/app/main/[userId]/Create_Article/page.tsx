@@ -5,7 +5,6 @@ import { UUID } from "crypto";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
 import useMRT from "@/hooks/useMRT";
-import useArticleMRT from "@/hooks/useArticleMRT";
 
 type Props = {
   params: {
@@ -15,24 +14,21 @@ type Props = {
 
 function Create_Article({ params: { userId } }: Props) {
   const { createArticle, loading } = useArticle();
-  const { createMrtTag } = useArticleMRT();
   const { getMRTList } = useMRT();
   const initialised = useRef(false);
   const [articleContent, setArticleContent] = useState("");
   const [articleTitle, setArticleTitle] = useState("");
   const [mrtStations, setMrtStations] = useState<Station[]>([]);
-  const [selectedStation, setSelectedStation] = useState<string[]>([]);
+  const [selectedStations, setSelectedStations] = useState<string[]>([]);
 
   interface Station {
     displayId: UUID;
-    mrtId: string;
     mrtName: string;
   }
 
   interface Data {
     mrtList: {
       displayId: UUID;
-      mrtId: string;
       mrtName: string;
     }[];
   }
@@ -48,7 +44,6 @@ function Create_Article({ params: { userId } }: Props) {
           const formattedMrtList: Station[] = fetchedData.mrtList.map(
             (item) => ({
               displayId: item.displayId,
-              mrtId: item.mrtId,
               mrtName: item.mrtName,
             })
           );
@@ -69,8 +64,8 @@ function Create_Article({ params: { userId } }: Props) {
         authorId: userId,
         articleContent: articleContent,
         articleTitle: articleTitle,
+        mrtDisplayIds: selectedStations,
       });
-      console.log(body);
     } catch (e) {
       console.error(e);
     }
@@ -106,20 +101,23 @@ function Create_Article({ params: { userId } }: Props) {
         <h1 className="m-4">Station</h1>
 
         {mrtStations.map((item) => (
-          <div className="m-4 w-1/2" key={item.displayId}>
-            <label htmlFor={item.mrtId}>
-              {item.mrtId} {item.mrtName}
+          <div className="m-4 w-1/4 flex items-center" key={item.displayId}>
+            <label className="w-1/2 h-full" htmlFor={item.displayId}>
+              {item.mrtName}
             </label>
             <Input
               type="checkbox"
-              id={item.mrtId}
-              value={item.mrtName}
+              id={item.displayId}
+              value={item.displayId}
+              className="max-h-full w-1/2"
               onChange={(e) => {
-                if (!selectedStation.includes(item.mrtName)) {
-                  setSelectedStation((list) => [...list, e.target.value]);
+                if (!selectedStations.includes(item.displayId)) {
+                  setSelectedStations((list) => [...list, e.target.value]);
                 } else
-                  setSelectedStation((list) =>
-                    list.filter((stationName) => stationName != item.mrtName)
+                  setSelectedStations((list) =>
+                    list.filter(
+                      (stationDisplayId) => stationDisplayId != item.displayId
+                    )
                   );
               }}
             ></Input>

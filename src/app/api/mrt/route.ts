@@ -6,16 +6,10 @@ import { db } from "@/db";
 import { mrtStationTable } from "@/db/schema";
 
 const postUserInfoRequestSchema = z.object({
-  mrtId: z.string(),
-  mrtName: z.string(),
-});
-const getInfoRequestSchema = z.object({
-  mrtId: z.string(),
   mrtName: z.string(),
 });
 
 type PostInfoRequest = z.infer<typeof postUserInfoRequestSchema>;
-type GetInfoRequest = z.infer<typeof getInfoRequestSchema>;
 
 export async function PUT(request: NextRequest) {
   const data = await request.json();
@@ -27,14 +21,13 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: "Invalid Input" }, { status: 400 });
   }
 
-  const { mrtId, mrtName } = data as PostInfoRequest;
+  const { mrtName } = data as PostInfoRequest;
 
   try {
-    if (mrtId && mrtName) {
+    if (mrtName) {
       const [createdMrt] = await db
         .insert(mrtStationTable)
         .values({
-          mrtId,
           mrtName,
         })
         .returning();
@@ -50,6 +43,7 @@ export async function PUT(request: NextRequest) {
 export async function GET() {
   try {
     const mrtList = await db.select().from(mrtStationTable);
+
     return NextResponse.json({ mrtList }, { status: 200 });
   } catch (error) {
     return NextResponse.json(

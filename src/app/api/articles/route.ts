@@ -3,12 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
 import { db } from "@/db";
-import { articleTable } from "@/db/schema";
+import { articleTable, articleMRTTable } from "@/db/schema";
 
 const postArticleRequestSchema = z.object({
   authorId: z.string().uuid(),
   articleContent: z.string().max(500),
   articleTitle: z.string().max(100),
+  mrtDisplayIds: z.string().array(),
 });
 
 type PostArticleRequest = z.infer<typeof postArticleRequestSchema>;
@@ -23,8 +24,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid Input" }, { status: 400 });
   }
 
-  const { authorId, articleContent, articleTitle } = data as PostArticleRequest;
-  let generatedId = "";
+  const { authorId, articleContent, articleTitle, mrtDisplayIds } =
+    data as PostArticleRequest;
   try {
     await db.transaction(async (tx) => {
       const [createdArticle] = await tx
@@ -35,15 +36,24 @@ export async function POST(request: NextRequest) {
           articleTitle,
         })
         .returning();
-      generatedId = createdArticle.displayId;
+      for (let i = 0; i < mrtDisplayIds.length; i++) {
+        const [createdArticleMrt] = await tx
+          .insert(articleMRTTable)
+          .values({
+            articleId: createdArticle.displayId,
+            mrtDisplayId: mrtDisplayIds[i],
+          })
+          .returning();
+      }
     });
-    return NextResponse.json({ generatedId }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }
     );
   }
+
+  return new NextResponse("Ok", { status: 200 });
 }
 
 export async function GET() {

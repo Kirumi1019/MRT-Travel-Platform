@@ -26,49 +26,68 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: "Invalid Input" }, { status: 400 });
   }
 
-  const { email,username,password,displayId } = data as PostInfoRequest;
+  const { email, username, password, displayId } = data as PostInfoRequest;
 
-  const dbpassword = await db.select({dbpassword: usersTable.hashedPassword}).from(usersTable).where(eq(usersTable.displayId,displayId));
+  const dbpassword = await db
+    .select({ dbpassword: usersTable.hashedPassword })
+    .from(usersTable)
+    .where(eq(usersTable.displayId, displayId));
 
   let hashedPassword = password;
 
-  if(password != dbpassword[0].dbpassword && password)
-  {
+  if (password != dbpassword[0].dbpassword && password) {
     hashedPassword = await bcrypt.hash(password, 10);
   }
-  
 
-    try{
-    if(username && email)
-    {
+  try {
+    if (username && email) {
       await db.transaction(async (tx) => {
-        await tx.update(usersTable)
-        .set({
-          email,
-          username,
-        })
-        .where(eq(usersTable.displayId,displayId))
-        .execute()
+        await tx
+          .update(usersTable)
+          .set({
+            email,
+            username,
+          })
+          .where(eq(usersTable.displayId, displayId))
+          .execute();
       });
     }
-    if(password)
-      {
-        await db.transaction(async (tx) => {
-          await tx.update(usersTable)
+    if (password) {
+      await db.transaction(async (tx) => {
+        await tx
+          .update(usersTable)
           .set({
             hashedPassword,
           })
-          .where(eq(usersTable.displayId,displayId))
-          .execute()
-        });
-      }
+          .where(eq(usersTable.displayId, displayId))
+          .execute();
+      });
+    }
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
   return new NextResponse("OK", { status: 200 });
+}
+
+export async function GET() {
+  try {
+    const userList = await db
+      .select({
+        displayId: usersTable.displayId,
+        userName: usersTable.username,
+      })
+      .from(usersTable);
+
+    return NextResponse.json({ userList }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Something went wrong" },
+      { status: 500 }
+    );
+  }
 }
