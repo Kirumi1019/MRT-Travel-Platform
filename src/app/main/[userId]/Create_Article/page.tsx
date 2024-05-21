@@ -116,7 +116,7 @@ function Create_Article({ params: { userId } }: Props) {
           ))}
         </select>
         <Button disabled={loading} className="m-4">
-          create
+          Finish
         </Button>
       </form>
     </>
