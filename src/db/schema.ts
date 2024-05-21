@@ -44,7 +44,7 @@ export const articleMRTTable = pgTable(
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    mrtName: uuid("mrt_name").notNull().references(()=>mrtStationTable.mrtName,{
+    mrtName: uuid("mrt_id").notNull().references(()=>mrtStationTable.displayId,{
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
@@ -94,7 +94,7 @@ export const mrtStationTable = pgTable(
   {
     displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
     mrtId: varchar("mrt_id",{length: 10}).notNull().unique(),
-    mrtName: varchar("mrt_name",{length: 15}).notNull().unique(),
+    mrtName: varchar("mrt_name",{length: 15}).notNull(),
   }
 )
 
@@ -106,16 +106,16 @@ export const mrtLikedTable = pgTable(
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    mrtStation: varchar("mrt_station", {length: 20}).notNull()
+    mrtStationId: uuid("mrt_id").notNull()
     .references(()=>
-      mrtStationTable.mrtName,{
+      mrtStationTable.displayId,{
         onDelete: "cascade",
         onUpdate: "cascade",
       }
     ),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.mrtStation, table.userId] }),  
+    pk: primaryKey({ columns: [table.mrtStationId, table.userId] }),  
   })
 )
 
