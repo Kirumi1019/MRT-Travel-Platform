@@ -44,13 +44,13 @@ export const articleMRTTable = pgTable(
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    mrtName: uuid("mrt_id").notNull().references(()=>mrtStationTable.displayId,{
+    mrtDisplayId: uuid("mrt_display_id").notNull().references(()=>mrtStationTable.displayId,{
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.articleId, table.mrtName] }),  
+    pk: primaryKey({ columns: [table.articleId, table.mrtDisplayId] }),  
   })
 )
 
@@ -93,8 +93,32 @@ export const mrtStationTable = pgTable(
   "mrt_station",
   {
     displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
-    mrtId: varchar("mrt_id",{length: 10}).notNull().unique(),
-    mrtName: varchar("mrt_name",{length: 15}).notNull(),
+    mrtName: varchar("mrt_name",{length: 15}).notNull().unique(),
+  }
+)
+
+// 捷運線車站代號、對應的捷運線
+export const mrtStationIDTable = pgTable(
+  "mrt_station_id",
+  {
+    mrtStationId: varchar("mrt_station_id",{length: 10}).notNull().unique().primaryKey(),
+    lineId: uuid("line_id").notNull().references(()=>mrtStationLineTable.displayId,{
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+    mrtDisplayId: uuid("mrt_id").notNull().references(()=>mrtStationTable.displayId,{
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  }
+)
+
+// 捷運線名字
+export const mrtStationLineTable = pgTable(
+  "mrt_station_line",
+  {
+    displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
+    lineName: varchar("line_name",{length: 10}).notNull().unique(),
   }
 )
 
@@ -106,7 +130,7 @@ export const mrtLikedTable = pgTable(
       onDelete: "cascade",
       onUpdate: "cascade",
     }),
-    mrtStationId: uuid("mrt_id").notNull()
+    mrtDisplayId: uuid("mrt_id").notNull()
     .references(()=>
       mrtStationTable.displayId,{
         onDelete: "cascade",
@@ -115,7 +139,7 @@ export const mrtLikedTable = pgTable(
     ),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.mrtStationId, table.userId] }),  
+    pk: primaryKey({ columns: [table.mrtDisplayId, table.userId] }),  
   })
 )
 
