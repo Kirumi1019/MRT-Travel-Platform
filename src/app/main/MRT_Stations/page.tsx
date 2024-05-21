@@ -1,11 +1,11 @@
-async function MRT_Stations() {
+import Home from "./test";
+
+async function Stations() {
     return(
         <>
-          <div>
-            MRT Stations...
-          </div>
+          <Home/>
         </>
     )
 }
 
-export default MRT_Stations;
+export default Stations;
