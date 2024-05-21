@@ -4,13 +4,11 @@ import { z } from "zod";
 
 import { db } from "@/db";
 import { articleTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
 
 const postArticleRequestSchema = z.object({
   authorId: z.string().uuid(),
   articleContent: z.string().max(500),
   articleTitle: z.string().max(100),
-  mrtStation: z.string().max(20),
 });
 
 type PostArticleRequest = z.infer<typeof postArticleRequestSchema>;
@@ -25,8 +23,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid Input" }, { status: 400 });
   }
 
-  const { authorId, articleContent, articleTitle, mrtStation } =
-    data as PostArticleRequest;
+  const { authorId, articleContent, articleTitle } = data as PostArticleRequest;
 
   try {
     await db.transaction(async (tx) => {
@@ -36,7 +33,6 @@ export async function POST(request: NextRequest) {
           authorId,
           articleContent,
           articleTitle,
-          mrtStation,
         })
         .returning();
     });

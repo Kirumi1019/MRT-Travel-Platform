@@ -68,7 +68,6 @@ function Create_Article({ params: { userId } }: Props) {
         authorId: userId,
         articleContent: articleContent,
         articleTitle: articleTitle,
-        mrtStation: selectedStation,
       });
     } catch (e) {
       console.error(e);

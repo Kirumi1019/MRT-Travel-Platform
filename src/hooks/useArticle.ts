@@ -13,12 +13,10 @@ export default function useArticle() {
     authorId,
     articleContent,
     articleTitle,
-    mrtStation,
   }: {
     authorId: string;
     articleContent: string;
     articleTitle: string;
-    mrtStation: string;
   }) => {
     setLoading(true);
     const res = await fetch(`/api/articles`, {
@@ -27,7 +25,6 @@ export default function useArticle() {
         authorId,
         articleContent,
         articleTitle,
-        mrtStation,
       }),
     });
 
