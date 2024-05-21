@@ -37,14 +37,13 @@ export async function POST(request: NextRequest) {
         .returning();
       generatedId = createdArticle.displayId;
     });
+    return NextResponse.json({ generatedId }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }
     );
   }
-
-  return new NextResponse(generatedId, { status: 200 });
 }
 
 export async function GET() {

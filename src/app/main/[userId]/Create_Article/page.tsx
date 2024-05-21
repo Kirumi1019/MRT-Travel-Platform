@@ -103,20 +103,7 @@ function Create_Article({ params: { userId } }: Props) {
         ></textarea>
 
         <h1 className="m-4">Station</h1>
-        {/* <select
-          disabled={loading}
-          onChange={(e) => setSelectedStation(e.target.value)}
-          value={selectedStation}
-          className="m-4 w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
-                    focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 
-                    dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        >
-          {mrtStations.map((item) => (
-            <option key={item.displayId} value={item.mrtName}>
-              {item.mrtName}
-            </option>
-          ))}
-        </select> */}
+
         {mrtStations.map((item) => (
           <div className="m-4 w-1/2" key={item.displayId}>
             <label htmlFor={item.mrtId}>
