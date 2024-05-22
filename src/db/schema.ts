@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   index,
   pgTable,
@@ -28,6 +29,14 @@ export const usersTable = pgTable(
   })
 );
 
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  articles: many(articleTable),
+  responses: many(responseTable),
+  articleLikes: many(articleLikeTable),
+  mrtLikes: many(mrtLikedTable),
+}));
+
+
 export const articleTable = pgTable(
   "articles",
   {
@@ -48,6 +57,17 @@ export const articleTable = pgTable(
     displayIdIndex: index("articleId_index").on(table.displayId),
   })
 );
+
+export const articleRelations = relations(articleTable, ({ one, many }) => ({
+  author: one(usersTable, {
+    fields: [articleTable.authorId],
+    references: [usersTable.displayId],
+  }),
+  responses: many(responseTable),
+  likes: many(articleLikeTable),
+  mrtStations: many(articleMRTTable),
+}));
+
 
 export const articleMRTTable = pgTable(
   "article_mrt",
@@ -70,6 +90,18 @@ export const articleMRTTable = pgTable(
   })
 );
 
+export const articleMRTRelations = relations(articleMRTTable, ({ one }) => ({
+  article: one(articleTable, {
+    fields: [articleMRTTable.articleId],
+    references: [articleTable.displayId],
+  }),
+  mrtStation: one(mrtStationTable, {
+    fields: [articleMRTTable.mrtDisplayId],
+    references: [mrtStationTable.displayId],
+  }),
+}));
+
+
 export const responseTable = pgTable("article_response", {
   displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
   articleId: uuid("article_id")
@@ -90,6 +122,18 @@ export const responseTable = pgTable("article_response", {
     .defaultNow()
     .notNull(),
 });
+
+export const responseRelations = relations(responseTable, ({ one }) => ({
+  article: one(articleTable, {
+    fields: [responseTable.articleId],
+    references: [articleTable.displayId],
+  }),
+  user: one(usersTable, {
+    fields: [responseTable.userId],
+    references: [usersTable.displayId],
+  }),
+}));
+
 
 export const articleLikeTable = pgTable(
   "article_liked",
@@ -112,10 +156,29 @@ export const articleLikeTable = pgTable(
   })
 );
 
+export const articleLikeRelations = relations(articleLikeTable, ({ one }) => ({
+  article: one(articleTable, {
+    fields: [articleLikeTable.articleId],
+    references: [articleTable.displayId],
+  }),
+  user: one(usersTable, {
+    fields: [articleLikeTable.userId],
+    references: [usersTable.displayId],
+  }),
+}));
+
+
 export const mrtStationTable = pgTable("mrt_station", {
   displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
   mrtName: varchar("mrt_name", { length: 15 }).notNull().unique(),
 });
+
+export const mrtStationRelations = relations(mrtStationTable, ({ many }) => ({
+  stationIDs: many(mrtStationIDTable),
+  articles: many(articleMRTTable),
+  mrtLikes: many(mrtLikedTable),
+}));
+
 
 // 捷運線車站代號、對應的捷運線
 export const mrtStationIDTable = pgTable("mrt_station_id", {
@@ -137,11 +200,28 @@ export const mrtStationIDTable = pgTable("mrt_station_id", {
     }),
 });
 
+export const mrtStationIDRelations = relations(mrtStationIDTable, ({ one }) => ({
+  mrtStation: one(mrtStationTable, {
+    fields: [mrtStationIDTable.mrtDisplayId],
+    references: [mrtStationTable.displayId],
+  }),
+  mrtLine: one(mrtStationLineTable, {
+    fields: [mrtStationIDTable.lineId],
+    references: [mrtStationLineTable.displayId],
+  }),
+}));
+
+
 // 捷運線名字
 export const mrtStationLineTable = pgTable("mrt_station_line", {
   displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
   lineName: varchar("line_name", { length: 10 }).notNull().unique(),
 });
+
+export const mrtStationLineRelations = relations(mrtStationLineTable, ({ many }) => ({
+  stationIDs: many(mrtStationIDTable),
+}));
+
 
 export const mrtLikedTable = pgTable(
   "mrt_liked",
@@ -163,3 +243,14 @@ export const mrtLikedTable = pgTable(
     pk: primaryKey({ columns: [table.mrtDisplayId, table.userId] }),
   })
 );
+
+export const mrtLikedRelations = relations(mrtLikedTable, ({ one }) => ({
+  user: one(usersTable, {
+    fields: [mrtLikedTable.userId],
+    references: [usersTable.displayId],
+  }),
+  mrtStation: one(mrtStationTable, {
+    fields: [mrtLikedTable.mrtDisplayId],
+    references: [mrtStationTable.displayId],
+  }),
+}));
