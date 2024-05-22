@@ -13,10 +13,12 @@ export default function useArticle() {
     authorId,
     articleContent,
     articleTitle,
+    mrtDisplayIds,
   }: {
     authorId: string;
     articleContent: string;
     articleTitle: string;
+    mrtDisplayIds: string[];
   }) => {
     setLoading(true);
     const res = await fetch(`/api/articles`, {
@@ -25,6 +27,7 @@ export default function useArticle() {
         authorId,
         articleContent,
         articleTitle,
+        mrtDisplayIds,
       }),
     });
 
@@ -34,7 +37,6 @@ export default function useArticle() {
     }
     router.refresh();
     setLoading(false);
-    return res;
   };
 
   const getArticles = async () => {

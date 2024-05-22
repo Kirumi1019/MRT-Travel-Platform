@@ -6,19 +6,12 @@ export default function useMRT() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const registerMRT = async ({
-    mrtId,
-    mrtName,
-  }: {
-    mrtId: string;
-    mrtName: string;
-  }) => {
+  const registerMRT = async ({ mrtName }: { mrtName: string }) => {
     setLoading(true);
 
     const res = await fetch(`/api/mrt`, {
       method: "PUT",
       body: JSON.stringify({
-        mrtId,
         mrtName,
       }),
     });

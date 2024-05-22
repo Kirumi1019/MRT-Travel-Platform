@@ -1,19 +1,19 @@
 import { useState } from "react";
 
-import {useRouter} from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 export default function useMember() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const registerMember = async({
+  const registerMember = async ({
     email,
     username,
-  } : {
-    email: string,
-    username: string,
+  }: {
+    email: string;
+    username: string;
   }) => {
-    setLoading(true)
+    setLoading(true);
 
     const res = await fetch(`/api/register`, {
       method: "PUT",
@@ -27,30 +27,29 @@ export default function useMember() {
       const body = await res.json();
       setErrorMessage(body.error);
       // throw new Error(body.error);
-      
     }
 
     router.refresh();
     setLoading(false);
   };
 
-  const loginMember = async({
+  const loginMember = async ({
     email,
     username,
     password,
-  } : {
-    email: string,
-    username: string,
-    password?: string,
+  }: {
+    email: string;
+    username: string;
+    password?: string;
   }) => {
-    setLoading(true)
+    setLoading(true);
 
     const res = await fetch(`/api/login`, {
       method: "PUT",
       body: JSON.stringify({
         email,
         username,
-        password
+        password,
       }),
     });
 
@@ -58,7 +57,6 @@ export default function useMember() {
       const body = await res.json();
       setErrorMessage(body.error);
       // throw new Error(body.error);
-      
     }
 
     router.refresh();
@@ -99,15 +97,25 @@ export default function useMember() {
     router.refresh();
     setLoading(false);
   };
-  
+
+  const getMembers = async () => {
+    setLoading(true);
+    const res = await fetch(`/api/members`, { method: "GET" });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+    router.refresh();
+    setLoading(false);
+    return res;
+  };
+
   return {
     updateMember,
     registerMember,
     loginMember,
+    getMembers,
     loading,
-    errorMessage
+    errorMessage,
   };
 }
-
-
-
