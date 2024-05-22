@@ -1,5 +1,5 @@
 "use client";
-import useArticle from "@/hooks/useArticle";
+import useArticles from "@/hooks/useArticles";
 import useMember from "@/hooks/useMember";
 import { UUID } from "crypto";
 import { useState, useEffect, useRef } from "react";
@@ -13,8 +13,12 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
-function Articles() {
+type Props = {
+  params: {
+    userId: UUID;
+  };
+};
+function Articles({ params: { userId } }: Props) {
   interface Article {
     displayId: UUID;
     authorId: UUID;
@@ -43,7 +47,7 @@ function Articles() {
     }[];
   }
 
-  const { getArticles, loading } = useArticle();
+  const { getArticles, loading } = useArticles();
   const { getMembers } = useMember();
   const [articleList, setArticleList] = useState<Article[]>([]);
   const [memberList, setMemberList] = useState<Member[]>([]);
@@ -56,7 +60,7 @@ function Articles() {
         try {
           const body = await getArticles();
           const fetchedData: ArticleData = await body.json();
-          //console.log(fetchedData.articleList);
+          console.log(fetchedData);
           const formattedArticleList: Article[] = fetchedData.articleList.map(
             (item) => ({
               displayId: item.displayId,
@@ -94,10 +98,6 @@ function Articles() {
     }
   }, []);
 
-  useEffect(() => {
-    lookUpAuthorName("63dbcbdd-92b4-419b-bc7e-0da5338925de");
-  }, [memberList]);
-
   const lookUpAuthorName = (authorId: string) => {
     const member = memberList.find((item) => item.displayId === authorId);
     return member?.userName;
@@ -119,7 +119,7 @@ function Articles() {
               <TableCell className="font-medium">{item.articleTitle}</TableCell>
               <TableCell>{lookUpAuthorName(item.authorId)}</TableCell>
               <TableCell>
-                <Link href={`/main/Articles/${item.displayId}`}>
+                <Link href={`/main/${userId}/Articles/${item.displayId}`}>
                   <Button>More</Button>
                 </Link>
               </TableCell>

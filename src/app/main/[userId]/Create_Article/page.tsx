@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import useArticle from "@/hooks/useArticle";
+import useArticles from "@/hooks/useArticles";
 import { UUID } from "crypto";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect, useRef } from "react";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 function Create_Article({ params: { userId } }: Props) {
-  const { createArticle, loading } = useArticle();
+  const { createArticle, loading } = useArticles();
   const { getMRTList } = useMRT();
   const initialised = useRef(false);
   const [articleContent, setArticleContent] = useState("");

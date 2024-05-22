@@ -19,7 +19,7 @@ async function Menu() {
         </Link>
       </div>
       <div className="w-full">
-        <Link href={`/main/Articles`}>
+        <Link href={`/main/${id}/Articles`}>
           <Button>View Articles</Button>
         </Link>
       </div>

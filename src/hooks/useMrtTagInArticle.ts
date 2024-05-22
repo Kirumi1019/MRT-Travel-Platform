@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import { NextResponse } from "next/server";
 import { UUID } from "crypto";
 
-export default function useArticle() {
+export default function useMrtTagInArticle() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const getArticle = async ({ articleId }: { articleId: UUID }) => {
+  const getMrtTags = async ({ articleId }: { articleId: UUID }) => {
     setLoading(true);
-    const res = await fetch(`/api/article`, {
+    const res = await fetch(`/api/articleMrtTag`, {
       method: "PUT",
       body: JSON.stringify({ articleId }),
     });
@@ -23,5 +23,5 @@ export default function useArticle() {
     return res;
   };
 
-  return { getArticle };
+  return { getMrtTags };
 }
