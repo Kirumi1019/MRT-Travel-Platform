@@ -6,13 +6,23 @@ export default function useMRT() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const registerMRT = async ({ mrtName }: { mrtName: string }) => {
+
+
+  const registerMRT = async (
+    { mrtName,mrtStationId,lineName } 
+    : { 
+      mrtName: string,
+      mrtStationId: string,
+      lineName: string, 
+    }) => {
     setLoading(true);
 
     const res = await fetch(`/api/mrt`, {
-      method: "PUT",
+      method: "POST",
       body: JSON.stringify({
         mrtName,
+        mrtStationId,
+        lineName,
       }),
     });
 
@@ -25,6 +35,7 @@ export default function useMRT() {
     router.refresh();
     setLoading(false);
   };
+
 
   const getMRTList = async () => {
     setLoading(true);

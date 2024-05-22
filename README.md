@@ -15,3 +15,8 @@ After downloading the codes
 Note: It is recommended not to upgrade drizzle-kit to v0.21.
 Note: drizzle-kit should be kept in version 0.20.18.
 Note: v5.drizzle.studio
+
+# Able to add MRT Station Manually
+
+After signing in, add "/Create_MRT_Stations" at the end of the url. So it will look like this "http://localhost:3000/main/Create_MRT_Stations"
+ 

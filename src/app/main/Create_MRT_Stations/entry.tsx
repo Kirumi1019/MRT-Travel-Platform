@@ -13,8 +13,10 @@ import useMRT from "@/hooks/useMRT";
 function AuthForm() {
   const { toast } = useToast();
   const {registerMRT, loading, errorMessage}= useMRT();
-  const [mrtId, setMrtId] = useState<string>("");
+  const [mrtStationId, setMrtStationId] = useState<string>("");
   const [mrtName, setMrtName] = useState<string>("");
+  const [lineName, setLineName] = useState<string>("");
+  
   
   /*
   Since async function will be skipped and the code below will continue be executed,
@@ -38,8 +40,9 @@ function AuthForm() {
     e.preventDefault();
     try {
       await registerMRT({
-        mrtId,
+        mrtStationId,
         mrtName,
+        lineName,
       });
     }catch(e){
       toast({
@@ -54,17 +57,24 @@ function AuthForm() {
     <>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <AuthInput
-              label="MRT ID"
+              label="MRT ID 車站代號"
               type="text"
-              value={mrtId}
-              setValue={setMrtId}
+              value={mrtStationId}
+              setValue={setMrtStationId}
             />
 
             <AuthInput
-              label="MRT Name"
+              label="MRT Name 車站名稱"
               type="text"
               value={mrtName}
               setValue={setMrtName}
+            />
+
+            <AuthInput
+              label="Line Name 捷運線名稱，參考台北捷運路線圖的名字"
+              type="text"
+              value={lineName}
+              setValue={setLineName}
             />
             
             {!loading && (<Button type="submit" className="w-full">
