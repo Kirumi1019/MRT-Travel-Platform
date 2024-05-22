@@ -9,13 +9,8 @@ const postUserInfoRequestSchema = z.object({
   mrtId: z.string(),
   mrtName: z.string(),
 });
-const getInfoRequestSchema = z.object({
-  mrtId: z.string(),
-  mrtName: z.string(),
-});
 
 type PostInfoRequest = z.infer<typeof postUserInfoRequestSchema>;
-type GetInfoRequest = z.infer<typeof getInfoRequestSchema>;
 
 export async function PUT(request: NextRequest) {
   const data = await request.json();
@@ -31,13 +26,11 @@ export async function PUT(request: NextRequest) {
 
   try {
     if (mrtId && mrtName) {
-      const [createdMrt] = await db
+      await db
         .insert(mrtStationTable)
         .values({
-          mrtId,
           mrtName,
         })
-        .returning();
     }
   } catch (error) {
     console.log(error);
