@@ -5,6 +5,7 @@ import { ToastAction } from "@radix-ui/react-toast";
 import useSpecificMRT from "@/hooks/useSpecificMRT";
 import { useEffect, useState } from "react";
 import NextTrain from "./NextTrain";
+import LikeButton from "./LikeButton";
 
 // Define the type for the mrtWholeInfo props
 type StationInfo = {
@@ -13,7 +14,12 @@ type StationInfo = {
     mrtLineNames: string[],
   };
 
-function StationInfo(){
+type User = {
+  userId: string,
+  initialLiked: boolean,
+}
+
+function StationInfo({userId, initialLiked}: User){
 
     const [stationInfo,setStationInfo] = useState<StationInfo | null>(null);
     const {getSpecificMRT, errorMessage}= useSpecificMRT();
@@ -31,8 +37,8 @@ function StationInfo(){
               // after turning, it becomes an array
               // the data is stored is the first element
               setStationInfo(info[0]);
-              console.log(info);
-              // conssole.log(info.mrtLineNames);
+              // console.log(info);
+              // console.log(info.mrtLineNames);
               // console.log(stationInfo);
             } catch (e) {
               console.error(e);
@@ -55,22 +61,50 @@ function StationInfo(){
     return (
       <>
         {stationInfo ? (
-          <>
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="mb-4">
-                <strong className="block text-lg font-bold mb-2">Station Name:</strong>
-                <p className="text-gray-800">{stationInfo.mrtStationName}</p>
+          stationInfo.mrtLineNames.length > 1 ? (
+              <>
+                <div className={`bg-gradient-to-r from-green-200 via-indigo-300 to-red-200 rounded-lg shadow-lg p-6 relative`}>
+                  <div className="absolute top-10 right-10">
+                    <LikeButton userId={userId} initialLiked={initialLiked} />
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <div className="mb-4">
+                      <strong className="block text-1xl mb-2 text-zinc-600">Station Name:</strong>
+                      <p className="text-3xl font-bold text-black-100">{stationInfo.mrtStationName}</p>
+                    </div>
+                    <div>
+                      <strong className="block text-1xl mb-2 text-zinc-600">Line Names:</strong>
+                      <p className="text-3xl font-bold text-black-100">{stationInfo.mrtLineNames.join(', ')}</p>
+                    </div>
+                  </div>
+                </div>
+                <NextTrain mrtName={stationInfo.mrtStationName} />
+              </>
+          )
+        : (
+              <>
+              <div className={`bg-gradient-to-r from-green-200 via-indigo-300 to-red-200 rounded-lg shadow-lg p-6 relative`}>
+                <div className="absolute top-10 right-10">
+                  <LikeButton userId={userId} initialLiked={initialLiked} />
+                </div>
+                <div className="flex flex-col items-start">
+                  <div className="mb-4">
+                    <strong className="block text-1xl mb-2 text-zinc-600">Station Name:</strong>
+                    <p className="text-3xl font-bold text-black-100">{stationInfo.mrtStationName}</p>
+                  </div>
+                  <div>
+                    <strong className="block text-1xl mb-2 text-zinc-600">Line Names:</strong>
+                    <p className="text-3xl font-bold text-black-100">{stationInfo.mrtLineNames.join(', ')}</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <strong className="block text-lg font-bold mb-2">Line Names:</strong>
-                <p className="text-gray-800">{stationInfo.mrtLineNames.join(', ')}</p>
-              </div>
-            </div>
-            <NextTrain mrtName={stationInfo.mrtStationName}/>
-          </>
+              <NextTrain mrtName={stationInfo.mrtStationName} />
+            </>
+          )
         ) : (
-            <p>Loading...</p>
-        )}
+                <p>Loading...</p>
+            )}
+
       </>
     )
 }
