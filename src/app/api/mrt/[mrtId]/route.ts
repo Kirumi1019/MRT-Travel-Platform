@@ -61,7 +61,7 @@ export async function GET(
       return acc;
     }, {}); // setting acc initial value as an empty object
 
-    console.log(mergedInfo);
+    // console.log(mergedInfo);
     return NextResponse.json(mergedInfo, { status: 200 });
   } catch (error) {
     return NextResponse.json(

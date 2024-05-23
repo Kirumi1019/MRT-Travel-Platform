@@ -23,7 +23,7 @@ try {
   const index = result.indexOf(']');
   result = result.substring(0,index+1);
   result = JSON.parse(result);
-  console.log(typeof(result));
+  // console.log(typeof(result));
   return NextResponse.json({Mrtdata: result});
 } catch (error) {
   console.error(error);

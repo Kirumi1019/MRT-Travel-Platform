@@ -30,7 +30,7 @@ async function fetchMrtWholeInfo() {
     .innerJoin(mrtStationLineTable, eq(mrtStationIDTable.lineId, mrtStationLineTable.displayId));
 
 // Group the data by mrtStationDisplayId and combine line names
-const groupedInfo: GroupedStationsInfo = mrtWholeInfo.reduce((acc: GroupedStationInfo, current: MrtInfo) => {
+const groupedInfo: GroupedStationsInfo = mrtWholeInfo.reduce((acc: GroupedStationsInfo, current: MrtInfo) => {
   const { mrtStationDisplayId, mrtStationName, mrtLineName } = current;
   if (!acc[mrtStationDisplayId]) {
     acc[mrtStationDisplayId] = {
