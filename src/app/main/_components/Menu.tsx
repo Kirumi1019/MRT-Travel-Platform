@@ -20,7 +20,12 @@ async function Menu() {
       </div>
       <div className="w-full">
         <Link href={`/main/${id}/Articles`}>
-          <Button>View Articles</Button>
+          <Button>View All Articles</Button>
+        </Link>
+      </div>
+      <div className="w-full">
+        <Link href={`/main/${id}/LikedArticles`}>
+          <Button>Saved Articles</Button>
         </Link>
       </div>
       <div className="w-full">

@@ -25,44 +25,51 @@ export async function PUT(request: NextRequest) {
     postUserInfoRequestSchema.parse(data);
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: "Invalid Registration. Check your Email or Username again" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid Registration. Check your Email or Username again" },
+      { status: 400 }
+    );
   }
 
-  const { email,username, password } = data as PostInfoRequest;
-  
+  const { email, username, password } = data as PostInfoRequest;
 
-    try{
-      const [exsitedUser] = await db
+  try {
+    const [exsitedUser] = await db
       .select({
         username: usersTable.username,
         hashedPassword: usersTable.hashedPassword,
       })
       .from(usersTable)
-      .where(eq(usersTable.email,email))
-      
-      if(!exsitedUser)
-      {
-        return NextResponse.json({ error: "Email Not Registered" }, { status: 400 });
-      }
+      .where(eq(usersTable.email, email));
 
-      if(username != exsitedUser.username)
-      {
-        return NextResponse.json({ error: "Username Incorrect" }, { status: 400 });
-      }
+    if (!exsitedUser) {
+      return NextResponse.json(
+        { error: "Email Not Registered" },
+        { status: 400 }
+      );
+    }
 
-      const isValid = await bcrypt.compare(password, exsitedUser.hashedPassword);
-      if(!isValid)
-      {
-        return NextResponse.json({ error: "Password Incorrect" }, { status: 400 });
-      }
-  } 
-  catch (error) {
+    if (username != exsitedUser.username) {
+      return NextResponse.json(
+        { error: "Username Incorrect" },
+        { status: 400 }
+      );
+    }
+
+    const isValid = await bcrypt.compare(password, exsitedUser.hashedPassword);
+    if (!isValid) {
+      return NextResponse.json(
+        { error: "Password Incorrect" },
+        { status: 400 }
+      );
+    }
+  } catch (error) {
     console.log(error);
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 
-  return new NextResponse("OK", { status: 200 });
+  return new NextResponse("Ok", { status: 200 });
 }

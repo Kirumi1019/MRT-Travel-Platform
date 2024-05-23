@@ -4,6 +4,7 @@ import useMrtTagInArticle from "@/hooks/useMrtTagInArticle";
 import useMRT from "@/hooks/useMRT";
 import useResponse from "@/hooks/uesResponse";
 import useMember from "@/hooks/useMember";
+import useLikeArticle from "@/hooks/useLikeArticle";
 import { UUID } from "crypto";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -32,6 +33,7 @@ function Article({ params: { userId, articleId } }: Props) {
   const { getMrtTags } = useMrtTagInArticle();
   const { getMRTList } = useMRT();
   const { getMembers } = useMember();
+  const { createLikeArticle, likeArticleLoading } = useLikeArticle();
   const { loading, createResponse, getResponses } = useResponse();
   const initialised = useRef(false);
   const [article, setArticle] = useState<Article>({
@@ -123,20 +125,22 @@ function Article({ params: { userId, articleId } }: Props) {
   const convertRateStar = (count: number) => {
     const starList: number[] = [];
     const hollowStarList: number[] = [];
+    var uid: number = 0;
 
     for (var i = 0; i < 5; i++) {
       if (i < count) {
-        starList.push(1);
-      } else hollowStarList.push(1);
+        starList.push(uid);
+      } else hollowStarList.push(uid);
+      uid++;
     }
 
     return (
       <div>
         {starList.map((item) => (
-          <StarIcon />
+          <StarIcon key={item} />
         ))}
         {hollowStarList.map((item) => (
-          <StarBorderIcon />
+          <StarBorderIcon key={item} />
         ))}
       </div>
     );
@@ -249,6 +253,15 @@ function Article({ params: { userId, articleId } }: Props) {
     }
   }, []);
 
+  const saveThisArticle = async () => {
+    try {
+      //console.log({ articleId, userId });
+      await createLikeArticle({ articleId, userId });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <>
       <Card className="m-2">
@@ -262,11 +275,20 @@ function Article({ params: { userId, articleId } }: Props) {
               key={item.mrtDisplayId}
               href={`/main/MRT_Stations/${item.mrtDisplayId}`}
             >
-              <Button className={"m-4"}>
+              <Button className="m-4 ml-0">
                 {lookUpStationName(item.mrtDisplayId)}
               </Button>
             </Link>
           ))}
+        </CardFooter>
+        <CardFooter>
+          <Button
+            onClick={saveThisArticle}
+            disabled={likeArticleLoading || loading}
+            className="m-4 ml-0"
+          >
+            Save this article
+          </Button>
         </CardFooter>
       </Card>
 
@@ -286,9 +308,7 @@ function Article({ params: { userId, articleId } }: Props) {
                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Leave a comment"
           ></textarea>
-          <h1 className="m-4">
-            Score ranged from 1 to 5, how would you rate this article?
-          </h1>
+          <h1 className="m-4">Rate this article</h1>
           <Input
             type="number"
             className="m-4 w-1/6"
@@ -299,7 +319,6 @@ function Article({ params: { userId, articleId } }: Props) {
               setRate(e.target.valueAsNumber);
             }}
           ></Input>
-
           <Button disabled={loading} className="m-4">
             Share
           </Button>
