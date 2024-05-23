@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import StarIcon from "@mui/icons-material/Star";
+import { Input } from "@/components/ui/input";
 
 type Props = {
   params: {
@@ -43,7 +46,7 @@ function Article({ params: { userId, articleId } }: Props) {
   const [commentContent, setCommentContent] = useState("");
   const [ResponseList, setResponseList] = useState<Response[]>([]);
   const [memberList, setMemberList] = useState<Member[]>([]);
-
+  const [rate, setRate] = useState(5);
   interface Article {
     articleContent: string;
     articleCreatedDate: string;
@@ -117,12 +120,34 @@ function Article({ params: { userId, articleId } }: Props) {
     return member?.userName;
   };
 
+  const convertRateStar = (count: number) => {
+    const starList: number[] = [];
+    const hollowStarList: number[] = [];
+
+    for (var i = 0; i < 5; i++) {
+      if (i < count) {
+        starList.push(1);
+      } else hollowStarList.push(1);
+    }
+
+    return (
+      <div>
+        {starList.map((item) => (
+          <StarIcon />
+        ))}
+        {hollowStarList.map((item) => (
+          <StarBorderIcon />
+        ))}
+      </div>
+    );
+  };
+
   const handleSubmitComment = async () => {
     try {
       const body = await createResponse({
         articleId: articleId,
         userId: userId,
-        rate: 5,
+        rate: rate,
         responseContent: commentContent,
       });
     } catch (e) {
@@ -261,34 +286,46 @@ function Article({ params: { userId, articleId } }: Props) {
                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Leave a comment"
           ></textarea>
+          <Input
+            type="number"
+            className="m-4 w-1/6"
+            max="5"
+            min="1"
+            value={rate}
+            onChange={(e) => {
+              setRate(e.target.valueAsNumber);
+            }}
+          ></Input>
+
           <Button disabled={loading} className="m-4">
             Share
           </Button>
         </form>
       </Card>
-      <Card className="m-2">
-        {ResponseList.map((item) => (
-          <>
-            <CardHeader>
-              <CardTitle className="font-normal">
-                @ {lookUpAuthorName(item.userId)}
-              </CardTitle>
-            </CardHeader>
-            <CardFooter>
-              <div>
-                <CardContent className="p-0 font-medium">
-                  {item.responseContent}
-                </CardContent>
-              </div>
-              <div>
-                <CardDescription className="p-0 font-light ">
-                  -{item.responseCreatedDate}
-                </CardDescription>
-              </div>
-            </CardFooter>
-          </>
-        ))}
-      </Card>
+      {ResponseList.map((item) => (
+        <Card className="m-2" key={item.displayId}>
+          <CardHeader>
+            <CardTitle className="font-normal">
+              @ {lookUpAuthorName(item.userId)}
+            </CardTitle>
+            {convertRateStar(item.rate)}
+          </CardHeader>
+          <CardFooter>
+            <div>
+              <CardContent className="p-0 font-medium">
+                {item.responseContent}
+              </CardContent>
+            </div>
+          </CardFooter>
+          <CardFooter>
+            <div>
+              <CardDescription className="p-0 font-light ">
+                - {item.responseCreatedDate}
+              </CardDescription>
+            </div>
+          </CardFooter>
+        </Card>
+      ))}
     </>
   );
 }
