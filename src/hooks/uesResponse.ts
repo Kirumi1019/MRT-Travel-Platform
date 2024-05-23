@@ -36,5 +36,22 @@ export default function useResponse() {
     setLoading(false);
   };
 
-  return { createResponse, loading };
+  const getResponses = async ({ articleId }: { articleId: string }) => {
+    setLoading(true);
+    const res = await fetch(`/api/response`, {
+      method: "PUT",
+      body: JSON.stringify({
+        articleId,
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+    router.refresh();
+    setLoading(false);
+    return res;
+  };
+  return { createResponse, getResponses, loading };
 }

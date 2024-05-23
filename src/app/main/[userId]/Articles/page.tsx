@@ -105,7 +105,6 @@ function Articles({ params: { userId } }: Props) {
 
   return (
     <>
-      <h1>所有文章</h1>
       <Table>
         <TableHeader>
           <TableRow>
