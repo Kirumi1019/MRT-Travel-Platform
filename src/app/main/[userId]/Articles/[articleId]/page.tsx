@@ -20,6 +20,7 @@ import Link from "next/link";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import StarIcon from "@mui/icons-material/Star";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 
 type Props = {
   params: {
@@ -33,7 +34,8 @@ function Article({ params: { userId, articleId } }: Props) {
   const { getMrtTags } = useMrtTagInArticle();
   const { getMRTList } = useMRT();
   const { getMembers } = useMember();
-  const { createLikeArticle, likeArticleLoading } = useLikeArticle();
+  const { createLikeArticle, checkIfExistLikeArticle, likeArticleLoading } =
+    useLikeArticle();
   const { loading, createResponse, getResponses } = useResponse();
   const initialised = useRef(false);
   const [article, setArticle] = useState<Article>({
@@ -49,6 +51,7 @@ function Article({ params: { userId, articleId } }: Props) {
   const [ResponseList, setResponseList] = useState<Response[]>([]);
   const [memberList, setMemberList] = useState<Member[]>([]);
   const [rate, setRate] = useState(5);
+  const [articleSaved, setArticleSaved] = useState(true);
   interface Article {
     articleContent: string;
     articleCreatedDate: string;
@@ -249,14 +252,36 @@ function Article({ params: { userId, articleId } }: Props) {
       fetchedMRTList();
       fetchedResponseList();
       fetchedMemberList();
+      checkIfArticleSaved();
+
       initialised.current = true;
     }
   }, []);
 
+  const checkIfArticleSaved = async () => {
+    try {
+      const check = await checkIfExistLikeArticle({ articleId, userId });
+      const body = check.json();
+      body.then((result) => {
+        const checkExist: boolean = JSON.parse(result.checkExist);
+        setArticleSaved(checkExist);
+        if (checkExist) {
+          toast({
+            title: "You have already saved this article",
+          });
+        }
+        //console.log(articleSaved);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const saveThisArticle = async () => {
     try {
-      //console.log({ articleId, userId });
       await createLikeArticle({ articleId, userId });
+      setArticleSaved(true);
+      toast({ title: "Success", description: "article saved" });
     } catch (e) {
       console.error(e);
     }
@@ -284,7 +309,7 @@ function Article({ params: { userId, articleId } }: Props) {
         <CardFooter>
           <Button
             onClick={saveThisArticle}
-            disabled={likeArticleLoading || loading}
+            disabled={likeArticleLoading || loading || articleSaved}
             className="m-4 ml-0"
           >
             Save this article
