@@ -286,6 +286,9 @@ function Article({ params: { userId, articleId } }: Props) {
                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Leave a comment"
           ></textarea>
+          <h1 className="m-4">
+            Score ranged from 1 to 5, how would you rate this article?
+          </h1>
           <Input
             type="number"
             className="m-4 w-1/6"
