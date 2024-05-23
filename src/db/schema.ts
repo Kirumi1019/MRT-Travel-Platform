@@ -36,7 +36,6 @@ export const usersRelations = relations(usersTable, ({ many }) => ({
   mrtLikes: many(mrtLikedTable),
 }));
 
-
 export const articleTable = pgTable(
   "articles",
   {
@@ -67,7 +66,6 @@ export const articleRelations = relations(articleTable, ({ one, many }) => ({
   likes: many(articleLikeTable),
   mrtStations: many(articleMRTTable),
 }));
-
 
 export const articleMRTTable = pgTable(
   "article_mrt",
@@ -101,7 +99,6 @@ export const articleMRTRelations = relations(articleMRTTable, ({ one }) => ({
   }),
 }));
 
-
 export const responseTable = pgTable("article_response", {
   displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
   articleId: uuid("article_id")
@@ -133,7 +130,6 @@ export const responseRelations = relations(responseTable, ({ one }) => ({
     references: [usersTable.displayId],
   }),
 }));
-
 
 export const articleLikeTable = pgTable(
   "article_liked",
@@ -167,7 +163,6 @@ export const articleLikeRelations = relations(articleLikeTable, ({ one }) => ({
   }),
 }));
 
-
 export const mrtStationTable = pgTable("mrt_station", {
   displayId: uuid("display_id").defaultRandom().notNull().primaryKey(),
   mrtName: varchar("mrt_name", { length: 15 }).notNull().unique(),
@@ -178,7 +173,6 @@ export const mrtStationRelations = relations(mrtStationTable, ({ many }) => ({
   articles: many(articleMRTTable),
   mrtLikes: many(mrtLikedTable),
 }));
-
 
 // 捷運線車站代號、對應的捷運線
 export const mrtStationIDTable = pgTable("mrt_station_id", {
@@ -200,17 +194,19 @@ export const mrtStationIDTable = pgTable("mrt_station_id", {
     }),
 });
 
-export const mrtStationIDRelations = relations(mrtStationIDTable, ({ one }) => ({
-  mrtStation: one(mrtStationTable, {
-    fields: [mrtStationIDTable.mrtDisplayId],
-    references: [mrtStationTable.displayId],
-  }),
-  mrtLine: one(mrtStationLineTable, {
-    fields: [mrtStationIDTable.lineId],
-    references: [mrtStationLineTable.displayId],
-  }),
-}));
-
+export const mrtStationIDRelations = relations(
+  mrtStationIDTable,
+  ({ one }) => ({
+    mrtStation: one(mrtStationTable, {
+      fields: [mrtStationIDTable.mrtDisplayId],
+      references: [mrtStationTable.displayId],
+    }),
+    mrtLine: one(mrtStationLineTable, {
+      fields: [mrtStationIDTable.lineId],
+      references: [mrtStationLineTable.displayId],
+    }),
+  })
+);
 
 // 捷運線名字
 export const mrtStationLineTable = pgTable("mrt_station_line", {
@@ -218,10 +214,12 @@ export const mrtStationLineTable = pgTable("mrt_station_line", {
   lineName: varchar("line_name", { length: 10 }).notNull().unique(),
 });
 
-export const mrtStationLineRelations = relations(mrtStationLineTable, ({ many }) => ({
-  stationIDs: many(mrtStationIDTable),
-}));
-
+export const mrtStationLineRelations = relations(
+  mrtStationLineTable,
+  ({ many }) => ({
+    stationIDs: many(mrtStationIDTable),
+  })
+);
 
 export const mrtLikedTable = pgTable(
   "mrt_liked",

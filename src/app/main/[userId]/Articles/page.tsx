@@ -60,7 +60,7 @@ function Articles({ params: { userId } }: Props) {
         try {
           const body = await getArticles();
           const fetchedData: ArticleData = await body.json();
-          console.log(fetchedData);
+          //console.log(fetchedData);
           const formattedArticleList: Article[] = fetchedData.articleList.map(
             (item) => ({
               displayId: item.displayId,
