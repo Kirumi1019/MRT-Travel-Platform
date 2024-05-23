@@ -60,7 +60,7 @@ function NextTrain(
         trackInfo.map((train, index) => (
           mrtName[mrtName.length - 1] === '站' ? (
             train.StationName === mrtName ? (
-              <div key={index} className="bg-gray-100 p-4 rounded-md w-1/3">
+              <div key={index} className="bg-gray-100 p-4 rounded-md w-1/3 hover:scale-125 duration-700">
                 <div className="font-bold">Destination Name: {train.DestinationName}</div>
                 <p>Countdown: {train.CountDown}</p>
                 <p>Train Number: {train.TrainNumber}</p>
@@ -70,7 +70,7 @@ function NextTrain(
           ) : 
           (
             train.StationName === mrtName+'站' ? (
-              <div key={index} className="bg-gray-100 p-4 rounded-md w-200">
+              <div key={index} className="bg-gray-100 p-4 rounded-md w-1/3 hover:scale-125 duration-700">
                 <div className="font-bold">Destination Name: {train.DestinationName}</div>
                 <p>Countdown: {train.CountDown}</p>
                 <p>Train Number: {train.TrainNumber}</p>

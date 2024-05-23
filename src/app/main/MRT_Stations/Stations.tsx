@@ -22,17 +22,16 @@ function Stations({mrtWholeInfo}: StationsProps){
   };
 
   return (
-    <div>
-      <h1>MRT Station Information</h1>
+    <div className="p-6 flex flex-wrap justify-around">
+      <h1 className="text-4xl font-bold mb-6 text-center text-gray-800 w-full">MRT Stations</h1>
       {mrtWholeInfo.map((info, index) => (
-        <div 
-          key={index} 
-          style={{ border: '1px solid black', margin: '10px', padding: '10px', cursor: 'pointer' }} 
+        <div
+          key={index}
+          className="w-1/3 flex-none border-2 border-transparent bg-gradient-to-r from-blue-300 to-teal-200 rounded-lg p-4 mb-4 cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:border-violet-800 shadow-lg"
           onClick={() => handleClick(info.mrtStationDisplayId)}
         >
-          <h2>{info.mrtStationName}</h2>
-          <p>Index: {index}</p>
-          <p>Line: {info.mrtLineNames.join(', ')}</p>
+          <h2 className="text-2xl font-semibold text-gray-800">{info.mrtStationName}</h2>
+          <p className="text-lg text-gray-700">Line: {info.mrtLineNames.join(', ')}</p>
         </div>
       ))}
     </div>
