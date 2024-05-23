@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 type StationInfo = {
   mrtStationDisplayId: string;
   mrtStationName: string;
-  mrtLineName: string;
+  mrtLineNames: string[];
 };
 
 type StationsProps = {
@@ -32,7 +32,7 @@ function Stations({mrtWholeInfo}: StationsProps){
         >
           <h2>{info.mrtStationName}</h2>
           <p>Index: {index}</p>
-          <p>Line: {info.mrtLineName}</p>
+          <p>Line: {info.mrtLineNames.join(', ')}</p>
         </div>
       ))}
     </div>
