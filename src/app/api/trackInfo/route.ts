@@ -34,8 +34,8 @@ export async function GET()
     const index = result.indexOf(']');
     result = result.substring(0,index+1);
     result = JSON.parse(result);
-    console.log(result[0]);
-    console.log('getting MRT api data');
+    // console.log(result[0]);
+    // console.log('getting MRT api data');
     return NextResponse.json({Mrtdata: result});
   } catch (error) {
     console.error(error);
