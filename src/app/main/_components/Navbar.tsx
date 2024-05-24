@@ -4,6 +4,7 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { publicEnv } from "@/lib/env/public";
+import { ArrowLeftSquareIcon } from 'lucide-react';
 
 import Menu from "./Menu";
 
@@ -20,17 +21,21 @@ async function Navbar() {
       <nav className="font-semibold sticky top-0 z-10 bg-white shadow-md flex justify-between items-center p-4">
         <Link href={'/main'} className='flex items-center space-x-2 h-6 me-3 sm:h-7'>
           <RoofingIcon />
-          <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Hello, {username}</span>
+          <span className="self-center text-xl font-bold whitespace-nowrap dark:text-white">MRT Travel</span>
         </Link>
       </nav>
 
       <div className="flex-grow p-3">
+        {/* <span className="self-center text-l whitespace-nowrap dark:text-white">Hello, {username}</span> */}
         <Menu />
       </div>
 
-      <div>
+      <div className='sticky bottom-0 right-0 flex-grow p-3 justify-between items-center'>
           <Link href={'/'}>
-            <Button className="bg-red-500 hover:bg-red-600 text-white">Log out</Button>
+            <Button className="bg-red-500 hover:bg-red-600 text-white">
+                <ArrowLeftSquareIcon className="w-6 h-6"/>
+                <div className="span"> Log Out</div>
+            </Button>
           </Link>
         </div>
     </div>
