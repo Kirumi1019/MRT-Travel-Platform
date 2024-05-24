@@ -27,7 +27,7 @@ async function Menu() {
       <Link href={`/main/${id}/Articles`}>
         <Button variant='sidebar'>
           <Landmark className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-blue" /> 
-          <span className="ms-3"> Travel Articles </span>
+          <span className="ms-3"> Travel Articles</span>
         </Button>
       </Link>
       <Link href={`/main/${id}/LikedArticles`}>
@@ -39,7 +39,7 @@ async function Menu() {
       <Link href={`/main/${id}/Create_Article`}>
         <Button variant='sidebar'>
           <Plus className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-blue" />
-          <span className="ms-3"> Create</span>
+          <span className="ms-3"> Create Post</span>
         </Button>
       </Link>
       <Link href={`/main/MRT_Route`}>
