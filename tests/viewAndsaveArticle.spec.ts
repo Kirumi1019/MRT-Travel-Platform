@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('view and save article', async ({ page }) => {
     //login
     await page.goto('http://localhost:3000/');
     await page.locator('div').filter({ hasText: /^Email$/ }).getByRole('textbox').fill('autouat@test.com');
@@ -12,8 +12,8 @@ test('test', async ({ page }) => {
     await page.getByRole('button', { name: 'View All Articles' }).click();
     await page.getByRole('row', { name: 'asd a More' }).getByRole('button').click();
     await page.getByRole('row', { name: '公館中正 a More' }).getByRole('button').click();
-    await expect(page.locator('h3')).toContainText('公館中正');
-    await expect(page.getByRole('main')).toContainText('test');
+    await expect(page.getByRole('heading', { name: '公館中正' })).toBeVisible();
+    await expect(page.getByText('test')).toBeVisible();
 
     //Save articles
     await page.getByRole('button', { name: 'Save this article' }).click();

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('has title', async ({ page }) => {
+test('login flow', async ({ page }) => {
   //Go to 
   await page.goto('http://localhost:3000');
 
