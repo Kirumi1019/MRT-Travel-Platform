@@ -8,7 +8,7 @@ test('has title', async ({ page }) => {
   //Register
   await page.getByText('Sign Up').click();
   await page.locator('div').filter({ hasText: /^Email$/ }).getByRole('textbox').fill('signup@test.com');
-  await page.locator('div').filter({ hasText: /^Username$/ }).getByRole('textbox').fill('signtest');
+  await page.locator('div').filter({ hasText: /^Username$/ }).getByRole('textbox').fill('autouat');
   await page.locator('div').filter({ hasText: /^Password$/ }).getByRole('textbox').fill('1234');
   await page.locator('div').filter({ hasText: /^Confirm Password$/ }).getByRole('textbox').fill('1234');
   await page.getByRole('button', { name: 'Sign Up' }).click();
