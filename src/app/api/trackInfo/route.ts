@@ -1,8 +1,6 @@
 import next from "next";
 import { revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
-import { cache } from "react";
-
 export async function GET() 
 {
   

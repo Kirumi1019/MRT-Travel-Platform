@@ -2,6 +2,13 @@
 // import { useParams } from 'next/navigation'; // use for getting url params
 // pages/index.tsx
 import { useEffect, useState } from "react";
+import Locker from "./Locker";
+
+// import mui icon
+import TrainOutlinedIcon from "@mui/icons-material/TrainOutlined";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 
 interface TrainInfo {
   CountDown: string;
@@ -50,43 +57,60 @@ function NextTrain({ mrtName }: MRTName) {
 
   return (
     <>
-      <h1 className="p-4 text-2xl font-bold">Track Info</h1>
-      <div className="max-w-screen-lg mx-auto flex flex-wrap gap-4 px-5">
-        {error && <p className="text-red-500 col-span-2">{error}</p>}
-        {trackInfo.length > 0 ? (
-          trackInfo.map((train, index) =>
-            mrtName[mrtName.length - 1] === "站" ? (
-              train.StationName === mrtName ? (
-                <div
-                  key={index}
-                  className="bg-gray-100 p-4 rounded-md w-1/3 hover:scale-125 duration-700"
-                >
-                  <div className="font-bold">
-                    Destination Name: {train.DestinationName}
-                  </div>
-                  <p>Countdown: {train.CountDown}</p>
-                  <p>Train Number: {train.TrainNumber}</p>
-                  {/* <p>Station Name: {train.StationName}</p> */}
-                </div>
-              ) : null
-            ) : train.StationName === mrtName + "站" ? (
+      <h1 className="p-4 text-2xl font-bold text-gray-800">Track Info</h1>
+    <div className="max-w-screen-lg mx-auto flex flex-wrap gap-4 px-5">
+      {error && <p className="text-red-500 col-span-2">{error}</p>}
+      {trackInfo.length > 0 ? (
+        trackInfo.map((train, index) =>
+          mrtName[mrtName.length - 1] === "站" ? (
+            train.StationName === mrtName ? (
               <div
                 key={index}
-                className="bg-gray-100 p-4 rounded-md w-1/3 hover:scale-125 duration-700"
+                className="bg-white shadow-lg rounded-lg p-4 col-span-1 transition-all duration-300 hover:shadow-xl hover:scale-110"
               >
-                <div className="font-bold">
-                  Destination Name: {train.DestinationName}
+                <div className="flex items-center mb-2 text-gray-800">
+                  <TrainOutlinedIcon className="mr-2 text-green-500" />
+                  <h2 className="text-lg font-bold">
+                    Destination Name: {train.DestinationName}
+                  </h2>
                 </div>
-                <p>Countdown: {train.CountDown}</p>
-                <p>Train Number: {train.TrainNumber}</p>
-                {/* <p>Station Name: {train.StationName}</p> */}
+                <div className="flex items-center mb-2 text-gray-600">
+                  {train.CountDown === "營運時間已過" ? <DoDisturbIcon className="mr-2 text-red-500" /> : <TimerOutlinedIcon className="mr-2 text-orange-500" />}
+                  Countdown: {train.CountDown}
+                </div>
+                <div className="flex items-center text-gray-600">
+                  <LocationOnOutlinedIcon className="mr-2 text-blue-500" />
+                  Train Number: {train.TrainNumber}
+                </div>
               </div>
             ) : null
-          )
-        ) : (
-          <p className="col-span-2">Loading...</p>
-        )}
-      </div>
+          ) : train.StationName === mrtName + "站" ? (
+            <div
+              key={index}
+              className="bg-white shadow-lg rounded-lg p-4 col-span-1 transition-all duration-300 hover:shadow-xl hover:scale-105"
+            >
+              <div className="flex items-center mb-2 text-gray-800">
+                <TrainOutlinedIcon className="mr-2 text-green-500" />
+                <h2 className="text-lg font-bold">
+                  Destination Name: {train.DestinationName}
+                </h2>
+              </div>
+              <div className="flex items-center mb-2 text-gray-600">
+                <TimerOutlinedIcon className="mr-2 text-orange-500" />
+                Countdown: {train.CountDown}
+              </div>
+              <div className="flex items-center text-gray-600">
+                <LocationOnOutlinedIcon className="mr-2 text-blue-500" />
+                Train Number: {train.TrainNumber}
+              </div>
+            </div>
+          ) : null
+        )
+      ) : (
+        <p className="col-span-2 text-gray-600">Loading...</p>
+      )}
+    </div>
+      <Locker mrtName={mrtName}/>
     </>
   );
 }
