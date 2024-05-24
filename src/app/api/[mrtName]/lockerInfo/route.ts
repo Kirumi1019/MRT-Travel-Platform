@@ -10,9 +10,9 @@ export async function GET(
   }
 ) 
 {
-    let mrtName = params.mrtName;
-    mrtName = mrtName[mrtName.length - 1] === "站" ? mrtName : mrtName+'站';
-    const myHeaders = new Headers();
+  let mrtName = params.mrtName;
+  mrtName = mrtName[mrtName.length - 1] === "站" ? mrtName : mrtName+'站';
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "text/xml; charset=utf-8");
 
   const raw = `<?xml version="1.0" encoding="utf-8"?> 
@@ -27,7 +27,6 @@ export async function GET(
   </getLockerMRTSationName> 
   </soap:Body> 
   </soap:Envelope> `
-
   // Remember that it will store in server cache after the first request!!!
   // So we have to overlook the data in cache ('no-store') and request again 
   // default: 'force-cache'
@@ -49,9 +48,11 @@ export async function GET(
     const index = result.indexOf(']');
     result = result.substring(0,index+1);
     result = JSON.parse(result);
+    // console.log('in');
+    // console.log(params.mrtName);
     // console.log(result[0]);
     // console.log('getting MRT api data');
-    return NextResponse.json({Mrtdata: result});
+    return NextResponse.json({Lockerdata: result});
   } catch (error) {
     console.error(error);
   };

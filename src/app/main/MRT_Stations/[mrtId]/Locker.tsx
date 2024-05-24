@@ -24,7 +24,7 @@ type MRTName = {
   mrtName: string;
 };
 
-function NextTrain({ mrtName }: MRTName) {
+function Locker({ mrtName }: MRTName) {
   const [lockerInfo, setLockerInfo] = useState<Locker[]>([]);
   const [error, setError] = useState<string>("");
 
@@ -35,7 +35,12 @@ function NextTrain({ mrtName }: MRTName) {
   useEffect(() => {
     const fetchLockerInfo = async () => {
       try {
-        const response = await fetch(`/api/${mrtName}/lockerInfo`, {
+        // watch out that 台北101/世貿 will cause the wrong param get by api
+        // since therre is a '/'
+        const newName = mrtName.indexOf('/') !== -1 ?
+         mrtName.substring(0,mrtName.indexOf('/')) : mrtName;
+
+        const response = await fetch(`/api/${newName}/lockerInfo`, {
           method: "GET",
         });
         // console.log('fetch api response');
@@ -47,7 +52,7 @@ function NextTrain({ mrtName }: MRTName) {
         const dataList = await response.json();
 
         // Sort the lockerInfo array based on StationName in alphabetical order
-        const sortedLockerInfo = dataList.Mrtdata.sort((a: Locker, b:Locker) =>
+        const sortedLockerInfo = dataList.Lockerdata.sort((a: Locker, b:Locker) =>
           a.LockerDescription.localeCompare(b.LockerDescription)
         );
 
@@ -108,4 +113,4 @@ function NextTrain({ mrtName }: MRTName) {
   );
 }
 
-export default NextTrain;
+export default Locker;
