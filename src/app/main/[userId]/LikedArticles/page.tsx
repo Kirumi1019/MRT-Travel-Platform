@@ -160,7 +160,7 @@ function LikedArticles({ params: { userId } }: Props) {
               </TableCell>
               <TableCell>
                 <Link href={`/main/${userId}/Articles/${item.articleId}`}>
-                  <Button className="ml-2 mr-2">More</Button>
+                  <Button className="ml-2 mr-2">Detail</Button>
                 </Link>
                 <Button
                   onClick={(e: any) => {
