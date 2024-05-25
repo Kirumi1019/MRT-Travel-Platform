@@ -31,7 +31,7 @@ async function Navbar() {
 
       <div className='sticky bottom-0 p-3 flex justify-start'>
         <Link href={'/'}>
-          <Button className="bg-red-500 hover:bg-red-600 text-white flex items-center space-x-2">
+          <Button className="bg-gray-500 hover:bg-gray-700 text-white flex items-center space-x-2">
             <ArrowLeftSquareIcon className="w-6 h-6"/>
             <span>Log Out</span>
           </Button>
