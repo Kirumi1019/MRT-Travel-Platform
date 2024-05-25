@@ -20,3 +20,6 @@ After downloading the codes
 
 After signing in, add "/Create_MRT_Stations" at the end of the url. So it will look like this "http://localhost:3000/main/Create_MRT_Stations"
  
+# Resource:
+UI Design:
+MUI, shadcn, lucide, radix

@@ -13,7 +13,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { mrtStationIDRelations } from "@/db/schema";
 
 type Props = {
   params: {
