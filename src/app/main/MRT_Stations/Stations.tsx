@@ -1,10 +1,10 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import useMRTLine from '@/hooks/useMrtLine';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import useMRTLine from "@/hooks/useMrtLine";
 
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 // Define the type for the mrtWholeInfo props
 type StationInfo = {
@@ -16,19 +16,23 @@ type StationInfo = {
 
 type StationsProps = {
   mrtWholeInfo: StationInfo[];
-}
+};
 
 type Line = {
-  displayId: string,
-  lineName: string,
-}
+  displayId: string;
+  lineName: string;
+};
 
-function countAlphabetFrequency(stationIds: string[]): { [key: string]: number } {
+function countAlphabetFrequency(stationIds: string[]): {
+  [key: string]: number;
+} {
   const frequencyMap: { [key: string]: number } = {};
   // console.log(stationIds);
-  stationIds.forEach(stationId => {
-    const alphabet = stationId[1].search(/[A-Za-z]/) ? stationId.slice(0, 2) : stationId.slice(0, 1) ;
-    console.log(stationId[1].search(/[A-Za-z]/));
+  stationIds.forEach((stationId) => {
+    const alphabet = stationId[1].search(/[A-Za-z]/)
+      ? stationId.slice(0, 2)
+      : stationId.slice(0, 1);
+    //console.log(stationId[1].search(/[A-Za-z]/));
     if (frequencyMap[alphabet]) {
       frequencyMap[alphabet]++;
     } else {
@@ -46,10 +50,10 @@ function sortByMostFrequentAlphabet(a: StationInfo, b: StationInfo): number {
   const bFrequencies = Object.values(bFrequencyMap).sort((a, b) => b - a);
 
   const aMostFrequentAlphabet = Object.keys(aFrequencyMap).find(
-    key => aFrequencyMap[key] === aFrequencies[0]
+    (key) => aFrequencyMap[key] === aFrequencies[0]
   );
   const bMostFrequentAlphabet = Object.keys(bFrequencyMap).find(
-    key => bFrequencyMap[key] === bFrequencies[0]
+    (key) => bFrequencyMap[key] === bFrequencies[0]
   );
 
   // If the most frequent alphabets are different, sort based on the alphabet
@@ -60,13 +64,13 @@ function sortByMostFrequentAlphabet(a: StationInfo, b: StationInfo): number {
   } else {
     // If the most frequent alphabets are the same, sort based on the number after the alphabet
     const aMostFrequentNumbers = a.stationId
-      .filter(stationId => stationId.startsWith(aMostFrequentAlphabet!))
-      .map(stationId => parseInt(stationId.slice(2), 10))
+      .filter((stationId) => stationId.startsWith(aMostFrequentAlphabet!))
+      .map((stationId) => parseInt(stationId.slice(2), 10))
       .sort((a, b) => a - b);
 
     const bMostFrequentNumbers = b.stationId
-      .filter(stationId => stationId.startsWith(bMostFrequentAlphabet!))
-      .map(stationId => parseInt(stationId.slice(2), 10))
+      .filter((stationId) => stationId.startsWith(bMostFrequentAlphabet!))
+      .map((stationId) => parseInt(stationId.slice(2), 10))
       .sort((a, b) => a - b);
 
     // Compare the first elements of the sorted number arrays
@@ -74,24 +78,24 @@ function sortByMostFrequentAlphabet(a: StationInfo, b: StationInfo): number {
   }
 }
 
-function Stations({mrtWholeInfo}: StationsProps){
+function Stations({ mrtWholeInfo }: StationsProps) {
   const router = useRouter();
   const { getMrtLineList, loading } = useMRTLine();
   const [mrtLine, setMrtLine] = useState<Line[]>([]);
-  const [selectedLine, setSelectedLine] = useState<string>('All');
+  const [selectedLine, setSelectedLine] = useState<string>("All");
 
   useEffect(() => {
     const fetchMRTLineList = async () => {
-        try {
-          const res = await getMrtLineList();
-          const info = await res.json();
+      try {
+        const res = await getMrtLineList();
+        const info = await res.json();
 
-          setMrtLine(info.LineList)
-          setSelectedLine('All');
-        } catch (e) {
-          console.error(e);
-        }
-    }
+        setMrtLine(info.LineList);
+        setSelectedLine("All");
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
     fetchMRTLineList();
   }, []);
@@ -101,24 +105,39 @@ function Stations({mrtWholeInfo}: StationsProps){
     router.push(`./MRT_Stations/${mrtStationDisplayId}`);
   };
 
-  const handleLineChange = (event: React.MouseEvent<HTMLElement>, newLine: string) => {
+  const handleLineChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newLine: string
+  ) => {
     setSelectedLine(newLine);
   };
 
   // filter the stations so that it matches with selectedLine
-  const filteredStations = selectedLine === 'All'
-    ? mrtWholeInfo
-    : mrtWholeInfo.filter(station => station.mrtLineNames.includes(selectedLine));
+  const filteredStations =
+    selectedLine === "All"
+      ? mrtWholeInfo
+      : mrtWholeInfo.filter((station) =>
+          station.mrtLineNames.includes(selectedLine)
+        );
   // console.log(filteredStations)
-  const sortedFilterStations = filteredStations.sort(sortByMostFrequentAlphabet);
-  console.log(sortedFilterStations);
+  const sortedFilterStations = filteredStations.sort(
+    sortByMostFrequentAlphabet
+  );
+  //console.log(sortedFilterStations);
 
   return (
     <div className="w-auto p-6 flex flex-col items-center gap-8 px-8">
-      <h1 className="text-4xl font-bold mb-1 text-center text-gray-800 w-full">MRT Stations</h1>
+      <h1 className="text-4xl font-bold mb-1 text-center text-gray-800 w-full">
+        MRT Stations
+      </h1>
 
-      <ToggleButtonGroup value={selectedLine} exclusive onChange={handleLineChange} aria-label="MRT Line" 
-      className="mb-1 flex flex-wrap bg-gradient-to-r from-emerald-100 via-teal-200 to-sky-400 gap-0 justify-center">
+      <ToggleButtonGroup
+        value={selectedLine}
+        exclusive
+        onChange={handleLineChange}
+        aria-label="MRT Line"
+        className="mb-1 flex flex-wrap bg-gradient-to-r from-emerald-100 via-teal-200 to-sky-400 gap-0 justify-center"
+      >
         {!loading ? (
           <ToggleButton
             value="All"
@@ -144,19 +163,25 @@ function Stations({mrtWholeInfo}: StationsProps){
         ))}
       </ToggleButtonGroup>
 
-      {!loading ? (<div className="w-full flex flex-wrap justify-between gap-8">
-        {filteredStations.map((info, index) => (
-          <div
-            key={index}
-            className="w-1/3 flex-none border-2 border-transparent bg-gradient-to-r from-blue-300 to-teal-200 rounded-lg p-4 mb-4 cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:border-violet-800 shadow-lg"
-            onClick={() => handleClick(info.mrtStationDisplayId)}
-          >
-            <h2 className="text-2xl font-semibold text-gray-800">{info.mrtStationName}</h2>
-            <p className="text-lg text-gray-700">Line: {info.mrtLineNames.join(', ')}</p>
-            <p>{info.stationId.join(', ')}</p>
-          </div>
-        ))}
-      </div>) : null}
+      {!loading ? (
+        <div className="w-full flex flex-wrap justify-evenly gap-8">
+          {filteredStations.map((info, index) => (
+            <div
+              key={index}
+              className="w-1/3 flex-none border-2 border-transparent bg-gradient-to-r from-blue-300 to-teal-200 rounded-lg p-4 mb-4 cursor-pointer transform transition-transform duration-300 hover:scale-105 hover:border-violet-800 shadow-lg"
+              onClick={() => handleClick(info.mrtStationDisplayId)}
+            >
+              <h2 className="text-2xl font-semibold text-gray-800">
+                {info.mrtStationName}
+              </h2>
+              <p className="text-lg text-gray-700">
+                Line: {info.mrtLineNames.join(", ")}
+              </p>
+              <p>{info.stationId.join(", ")}</p>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }
