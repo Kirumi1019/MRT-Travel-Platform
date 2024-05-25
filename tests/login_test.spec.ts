@@ -8,11 +8,14 @@ test('login flow', async ({ page }) => {
   await page.locator('div').filter({ hasText: /^Email$/ }).getByRole('textbox').fill('autouat@test.com');
   await page.locator('div').filter({ hasText: /^Username$/ }).getByRole('textbox').fill('autouat');
   await page.locator('input[type="password"]').fill('test');
-  await page.getByRole('button', { name: 'Sign In' }).click();
+  await page.getByRole('button', { name: 'Sign In' }).click({force: true});
 
   //check info
-  await page.getByRole('button', { name: 'My Info' }).click();
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('button', { name: 'autouat \'s Profile' }).click({force: true});
   await page.locator('[id="emailautouat\\@test\\.com"]').isVisible();
   await page.locator('#userNameautouat').isVisible();
-  await page.getByRole('button', { name: 'Log out' }).click();
+
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('button', { name: 'Log Out' }).click({force: true});
 });

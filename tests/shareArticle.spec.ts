@@ -6,21 +6,25 @@ test('share article', async ({ page }) => {
     await page.locator('div').filter({ hasText: /^Email$/ }).getByRole('textbox').fill('autouat@test.com');
     await page.locator('div').filter({ hasText: /^Username$/ }).getByRole('textbox').fill('autouat');
     await page.locator('input[type="password"]').fill('test');
-    await page.getByRole('button', { name: 'Sign In' }).click();
+    await page.getByRole('button', { name: 'Sign In' }).click({force: true});
     
     //Create article
-    await page.getByRole('button', { name: 'Create Article' }).click();
+    await page.waitForLoadState('networkidle');
+    await page.getByRole('button', { name: 'Create Article' }).waitFor();
+    await page.getByRole('button', { name: 'Create Article' }).click({force: true});
     await page.getByPlaceholder('Article Title').fill('autouattest');
     await page.getByPlaceholder('Article Content').fill('i love sad!');
-    await page.getByLabel('台北車站').check();
-    await page.getByRole('button', { name: 'Share' }).click();
+    await page.getByRole('button', { name: '松山新店線' }).click({force: true});
+    await page.getByLabel('G01 新店').check();
+    await page.getByRole('button', { name: 'Share' }).click({force: true});
 
     //Check article has been created
-    await page.getByRole('button', { name: 'View All Articles' }).click();
-    await page.getByRole('row', { name: 'autouattest autouat More' }).getByRole('cell').nth(2).click();
-    await page.getByRole('row', { name: 'autouattest autouat More' }).getByRole('button').click();
-    await expect(page.getByRole('heading', { name: 'autouattest' })).toBeVisible();
-    await expect(page.getByText('i love sad!')).toBeVisible();
-    await expect(page.locator('div').filter({ hasText: /^台北車站$/ })).toBeVisible();
-    await page.getByRole('button', { name: 'Log out' }).click();
+    await page.waitForLoadState('networkidle');
+    await page.goto('http://localhost:3000/main/MRT_Route');
+    await page.getByRole('button', { name: 'Travel Articles' }).click({force: true});
+    await page.getByRole('row', { name: 'autouattest autouat More' }).getByRole('button').click({force: true});
+    await expect(page.getByRole('heading', { name: 'Title: autouattest' })).toBeVisible();
+    await expect(page.getByText('Content:i love sad!')).toBeVisible();
+    await expect(page.getByRole('button', { name: '新店' })).toBeVisible();
+    await page.getByRole('button', { name: 'Log Out' }).click({force: true});
 });
