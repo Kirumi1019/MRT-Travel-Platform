@@ -57,7 +57,7 @@ function AuthForm() {
     <>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <AuthInput
-              label="MRT ID 車站代號"
+              label="MRT ID 車站代號 請不要有任何空白鍵"
               type="text"
               value={mrtStationId}
               setValue={setMrtStationId}

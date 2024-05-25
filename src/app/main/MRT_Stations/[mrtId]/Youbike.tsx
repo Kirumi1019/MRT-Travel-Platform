@@ -81,7 +81,7 @@ function Youbike({ mrtName }: MRTName) {
                   <TableCell>{data.sna}</TableCell>
                   <TableCell>{data.total}</TableCell>
                   <TableCell>
-                    {data.available_return_bikes !== 0 ? 
+                    {data.available_rent_bikes !== 0 ? 
                     (<CheckCircleIcon className="mr-2 text-green-500" />) 
                         :
                     (<CloseIcon className="mr-2 text-red-500"/>)
