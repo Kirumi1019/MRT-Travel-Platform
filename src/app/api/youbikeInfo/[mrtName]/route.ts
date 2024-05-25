@@ -31,6 +31,28 @@ act(全站禁用狀態、(0:禁用、1:啟用))、srcUpdateTime(YouBike2.0系統
 updateTime(大數據平台經過處理後將資料存入DB的時間)、infoTime(各場站來源資料更新時間)
 infoDate(各場站來源資料更新時間)
 
+
+New Taipei
+{
+  sno: '500203004',
+  sna: 'YouBike2.0_捷運三重站(1號出口)',
+  tot: '36',
+  sbi: '7',
+  sarea: '三重區',
+  mday: '20240525171319',
+  lat: '25.05464',
+  lng: '121.48322',
+  ar: '捷運路36號(旁)',
+  sareaen: 'Sanchong Dist',
+  snaen: 'YouBike2.0_MRT Sanchong Sta. (Exit 1)',
+  aren: 'No. 36, Jieyun Rd.',
+  bemp: '29',
+  act: '1'
+}
+sbi: 可借數量
+bemp 可歸還數量
+
+
 MRT return an array of objects
 {"StationName":"松山機場",
 "sno":"500110012",
@@ -42,22 +64,27 @@ MRT return an array of objects
 interface YouBikeStation {
   sno: string;
   sna: string;
-  sarea: string;
-  mday: string;
-  ar: string;
-  sareaen: string;
-  snaen: string;
-  aren: string;
   act: string;
-  srcUpdateTime: string;
-  updateTime: string;
-  infoTime: string;
-  infoDate: string;
   total: number;
   available_rent_bikes: number;
-  latitude: number;
-  longitude: number;
   available_return_bikes: number;
+}
+
+interface NewYouBikeStation {
+  sno: string,
+  sna: string,
+  tot: string,
+  sbi: string,
+  sarea: string,
+  mday: string,
+  lat: string,
+  lng: string,
+  ar: string,
+  sareaen: string,
+  snaen: string,
+  aren: string,
+  bemp: string,
+  act: string,
 }
 
 interface MRTStation {
@@ -92,10 +119,43 @@ export async function GET(
   };
 
   try {
-    // YouBike public api
-    const responseYoubike = await fetch("https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json",
+    // New Taipei Youbike public api
+    
+    const responseNewTaipeiYoubikev2 = await fetch("https://data.ntpc.gov.tw/api/datasets/010e5b15-3823-4b20-b401-b1cf000550c5/json?size=1000000000",
     requestOptionsYouBike);
-    const resultYoubike = await responseYoubike.json();
+    const resultNewTaipeiYoubikev2 = await responseNewTaipeiYoubikev2.json();
+
+    const responseNewTaipeiYoubikev1 = await fetch("https://data.ntpc.gov.tw/api/datasets/71cd1490-a2df-4198-bef1-318479775e8a/json?size=1000000",
+    requestOptionsYouBike);
+    const resultNewTaipeiYoubikev1 = await responseNewTaipeiYoubikev1.json();
+
+    const resultNewTaipeiYoubike = [...resultNewTaipeiYoubikev1, ...resultNewTaipeiYoubikev2]
+
+    // column name changed
+    const modifiedData = resultNewTaipeiYoubike.map(({ 
+      sno,sna,
+      tot,
+      sbi,
+      bemp,
+      act,
+    }:NewYouBikeStation) => ({
+      total: parseInt(tot),
+      available_rent_bikes: parseInt(sbi),
+      available_return_bikes: parseInt(bemp),
+      sno,sna,act
+    }));
+    // console.log(resultNewTaipeiYoubike);
+    
+    // Taipei YouBike public api
+    const responseTaipeiYoubike = await fetch("https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json",
+    requestOptionsYouBike);
+    const resultTaipeiYoubike = await responseTaipeiYoubike.json();
+
+    const NorthTaipeiresult = [...modifiedData, ...resultTaipeiYoubike]
+    
+    // console.log(NorthTaipeiresult[0]);
+    // console.log(NorthTaipeiresult[NorthTaipeiresult.length-1]);
+    // console.log(resultNewTaipeiYoubike);
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "text/xml; charset=utf-8");
@@ -132,10 +192,16 @@ export async function GET(
      resultMRTAPI = resultMRTAPI.substring(0,index+1);
      const resultMRT = JSON.parse(resultMRTAPI);
 
+    //  const test: YouBikeStation = resultMRT.find((youbike: YouBikeStation) => youbike.sno === '500220016');
+    //  console.log(test);  
+    
+    // const test: YouBikeStation = NorthTaipeiresult.find((youbike: YouBikeStation) => youbike.sno === '500220016');
+    // console.log(test);  
+
     // mergin data into one
     const mergedData: MergedStation[] = resultMRT.map((mrtStation: MRTStation) => {
-      const youbikeStation: YouBikeStation = resultYoubike.find((youbike: YouBikeStation) => youbike.sno === mrtStation.sno);
-    
+      const youbikeStation: YouBikeStation = NorthTaipeiresult.find((youbike: YouBikeStation) => youbike.sno === mrtStation.sno);
+      
       if (youbikeStation) {
         return {
           sna: youbikeStation.sna,
