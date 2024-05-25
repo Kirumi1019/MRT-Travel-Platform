@@ -28,7 +28,7 @@ async function Menu() {
         <Button variant="sidebar">
           <UserCircle className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-blue" />
           <div className="ms-3">
-            <span className="font-bold"> {username} </span> 's Profile
+            <span className="font-bold"> {username} </span>&apos;s Profile
           </div>
         </Button>
       </Link>
