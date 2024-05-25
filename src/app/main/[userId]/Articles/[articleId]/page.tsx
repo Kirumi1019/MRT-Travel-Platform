@@ -292,32 +292,40 @@ function Article({ params: { userId, articleId } }: Props) {
 
   return (
     <>
-      <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-8">
-        <CardHeader className="text-3xl flex items-center justify-center">
-          <CardTitle>{article.articleTitle}</CardTitle>
-          <Button
-            onClick={saveThisArticle}
-            disabled={likeArticleLoading || loading || articleSaved}
-            className="m-4 ml-0"
-          >
-            <Bookmark />
-            <span>Save</span>
+      <Card className="bg-white dark:bg-gray-900 antialiased max-w-2xl mx-auto rounded-lg shadow-lg overflow-hidden">
+  <div className="relative">
+    <div className="absolute top-4 right-4">
+      <Button
+        onClick={saveThisArticle}
+        disabled={likeArticleLoading || loading || articleSaved}
+        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center"
+      >
+        <Bookmark className="mr-2" />
+        <span>Save</span>
+      </Button>
+    </div>
+  </div>
+  <div className="p-6">
+    <h1 className="text-3xl font-bold mb-4">Title: {article.articleTitle}</h1>
+    <div className="mb-6">
+      <h2 className="text-lg font-bold mb-2">Content:</h2>
+      {article.articleContent}
+    </div>
+    <div className="flex flex-wrap">
+      {mrtTags.map((item) => (
+        <Link
+          key={item.mrtDisplayId}
+          href={`/main/MRT_Stations/${item.mrtDisplayId}`}
+          className="mr-2 mb-2"
+        >
+          <Button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
+            {lookUpStationName(item.mrtDisplayId)}
           </Button>
-        </CardHeader>
-        <CardContent>{article.articleContent}</CardContent>
-        <CardFooter>
-          {mrtTags.map((item) => (
-            <Link
-              key={item.mrtDisplayId}
-              href={`/main/MRT_Stations/${item.mrtDisplayId}`}
-            >
-              <Button className="m-4 ml-0">
-                {lookUpStationName(item.mrtDisplayId)}
-              </Button>
-            </Link>
-          ))}
-        </CardFooter>
-      </Card>
+        </Link>
+      ))}
+    </div>
+  </div>
+</Card>
 
       <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-2">
         <form onSubmit={handleSubmitComment}>
