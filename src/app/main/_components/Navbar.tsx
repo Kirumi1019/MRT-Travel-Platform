@@ -4,41 +4,39 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { publicEnv } from "@/lib/env/public";
+import { ArrowLeftSquareIcon } from 'lucide-react';
 
 import Menu from "./Menu";
 
 async function Navbar() {
   const session = await auth();
-
-  // console.log(session);
   if (!session || !session?.user?.id) {
     redirect(publicEnv.NEXT_PUBLIC_BASE_URL);
   }
-  
+
   const username = session.user?.username;
 
   return (
-    <div className="w-full flex flex-col justify-stretch">
-      <nav className="font-bold sticky flex flex-around justify-start content-center top-0 w-full border bg-slate-200 p-3">
-        <Link className='flex justify-around w-3/4' href={'/main'}>
+    <div className="w-full flex flex-col bg-gray-100 shadow h-full">
+      <nav className="font-semibold sticky top-0 z-10 bg-white shadow-md flex justify-between items-center p-4">
+        <Link href={'/main'} className='flex items-center space-x-2 h-6 me-3 sm:h-7'>
           <RoofingIcon />
-          Hello, {username}
+          <span className="self-center text-xl font-bold whitespace-nowrap dark:text-white">MRT Travel</span>
         </Link>
       </nav>
 
-      <div className="h-full flex flex-col justify-between">
-        <section className="h-3/4 flex flex-col justify-around  m-3">
-          <Menu />
-        </section>
-
-        <div className="m-3">
-          <Link href={'/'}>
-            <Button>Log out</Button>
-          </Link>
-        </div>
+      <div className="flex-grow p-3">
+        <Menu />
       </div>
 
-
+      <div className='sticky bottom-0 p-3 flex justify-start'>
+        <Link href={'/'}>
+          <Button className="bg-red-500 hover:bg-red-600 text-white flex items-center space-x-2">
+            <ArrowLeftSquareIcon className="w-6 h-6"/>
+            <span>Log Out</span>
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

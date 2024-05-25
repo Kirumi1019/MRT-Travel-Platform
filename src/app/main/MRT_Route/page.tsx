@@ -4,7 +4,7 @@ function MRT_Route() {
     return(
         <>
           <div>
-            MRT Route Pic
+            MRT Route Picture
           </div>
           <Image
             src={metroRoutePic}

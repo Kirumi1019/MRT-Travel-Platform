@@ -48,7 +48,6 @@ function Entry(info: Props) {
   return (
     <>
     
-    
       <TableRow key={info.username}>
         <TableCell> 
           <TextField

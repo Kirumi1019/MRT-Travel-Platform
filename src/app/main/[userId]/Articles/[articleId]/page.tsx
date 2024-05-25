@@ -1,10 +1,13 @@
 "use client";
+import * as React from 'react';
 import useArticle from "@/hooks/useArticle";
 import useMrtTagInArticle from "@/hooks/useMrtTagInArticle";
 import useMRT from "@/hooks/useMRT";
 import useResponse from "@/hooks/uesResponse";
 import useMember from "@/hooks/useMember";
 import useLikeArticle from "@/hooks/useLikeArticle";
+import RatingComponent from "@/components/ui/rating";
+import { Bookmark } from "lucide-react";
 import { UUID } from "crypto";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -289,9 +292,17 @@ function Article({ params: { userId, articleId } }: Props) {
 
   return (
     <>
-      <Card className="m-2">
-        <CardHeader className="text-3xl">
+      <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-8">
+        <CardHeader className="text-3xl flex items-center justify-center">
           <CardTitle>{article.articleTitle}</CardTitle>
+          <Button
+            onClick={saveThisArticle}
+            disabled={likeArticleLoading || loading || articleSaved}
+            className="m-4 ml-0"
+          >
+            <Bookmark />
+            <span>Save</span>
+          </Button>
         </CardHeader>
         <CardContent>{article.articleContent}</CardContent>
         <CardFooter>
@@ -306,18 +317,9 @@ function Article({ params: { userId, articleId } }: Props) {
             </Link>
           ))}
         </CardFooter>
-        <CardFooter>
-          <Button
-            onClick={saveThisArticle}
-            disabled={likeArticleLoading || loading || articleSaved}
-            className="m-4 ml-0"
-          >
-            Save this article
-          </Button>
-        </CardFooter>
       </Card>
 
-      <Card className="m-2">
+      <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-2">
         <form onSubmit={handleSubmitComment}>
           <h1 className="m-4">Leave a comment</h1>
           <textarea
@@ -327,11 +329,12 @@ function Article({ params: { userId, articleId } }: Props) {
             onChange={(e) => {
               setCommentContent(e.target.value);
             }}
-            className="m-4 block p-2.5 w-1/2 text-sm text-gray-900 bg-gray-50 
+            className="m-4 block p-2.5 w-4/5 text-sm text-gray-900 bg-gray-50 
                         rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500
                         dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
-                        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Leave a comment"
+                        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 
+                      "
+            placeholder="Your comment"
           ></textarea>
           <h1 className="m-4">Rate this article</h1>
           <Input
@@ -343,21 +346,26 @@ function Article({ params: { userId, articleId } }: Props) {
             onChange={(e) => {
               setRate(e.target.valueAsNumber);
             }}
-          ></Input>
-          <Button disabled={loading} className="m-4">
-            Share
+          />
+          <RatingComponent
+            max={5}
+            min={1}
+            value={rate}
+          />
+          <Button disabled={loading} className="m-4 inline-flex items-center py-2.5 text-black px-4 text-xs font-medium text-center bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
+            <div className="span">Post</div>
           </Button>
         </form>
       </Card>
       {ResponseList.map((item) => (
-        <Card className="m-2" key={item.displayId}>
-          <CardHeader>
+        <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-2" key={item.displayId}>
+          <CardHeader className="flex justify-between items-center mb-2">
             <CardTitle className="font-normal">
               @ {lookUpAuthorName(item.userId)}
             </CardTitle>
             {convertRateStar(item.rate)}
           </CardHeader>
-          <CardFooter>
+          <CardFooter className='inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-40 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
             <div>
               <CardContent className="p-0 font-medium">
                 {item.responseContent}

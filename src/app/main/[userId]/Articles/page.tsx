@@ -115,15 +115,17 @@ function Articles({ params: { userId } }: Props) {
         <TableBody>
           {articleList.map((item) => (
             <TableRow key={item.displayId}>
-              <TableCell className="font-medium w-1/2">
+              <TableCell className="font-medium w-1/2 px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                 {item.articleTitle}
               </TableCell>
-              <TableCell className="w-1/4">
+              <TableCell className="w-1/4 px-6 py-4">
                 {lookUpAuthorName(item.authorId)}
               </TableCell>
               <TableCell>
                 <Link href={`/main/${userId}/Articles/${item.displayId}`}>
-                  <Button>More</Button>
+                  <Button>
+                    Detail
+                  </Button>
                 </Link>
               </TableCell>
             </TableRow>
