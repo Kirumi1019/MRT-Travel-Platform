@@ -56,7 +56,7 @@ function Youbike({ mrtName }: MRTName) {
     };
 
     fetchYoubikeInfo();
-  }, []);
+  }, [mrtName]);
 
   return (
     <>

@@ -29,9 +29,9 @@ async function Station({
   })
     .from(mrtLikedTable)
     .where(and(eq(mrtLikedTable.userId,id),
-                eq(mrtLikedTable.mrtDisplayId, mrtId)
+               eq(mrtLikedTable.mrtDisplayId, mrtId)
             )
-        ).execute();
+    ).execute();
     
     return (
         <>

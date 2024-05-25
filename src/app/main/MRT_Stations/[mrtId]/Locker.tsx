@@ -69,7 +69,7 @@ function Locker({ mrtName }: MRTName) {
     };
 
     fetchLockerInfo();
-  }, []);
+  }, [mrtName]);
 
   return (
     <>
