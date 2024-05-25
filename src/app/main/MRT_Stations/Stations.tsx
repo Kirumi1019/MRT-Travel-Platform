@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import useMRTLine from '@/hooks/useMrtLine';
 
@@ -28,10 +28,12 @@ function Stations({mrtWholeInfo}: StationsProps){
   const [mrtLine, setMrtLine] = useState<Line[]>([]);
   const [selectedLine, setSelectedLine] = useState<string>('All');
 
+  // Use useRef to store the getMrtLineList function
+  const getMrtLineListRef = useRef(getMrtLineList);
   useEffect(() => {
     const fetchMRTLineList = async () => {
         try {
-          const res = await getMrtLineList();
+          const res = await getMrtLineListRef.current();
           const info = await res.json();
 
           setMrtLine(info.LineList)
