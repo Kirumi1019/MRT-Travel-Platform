@@ -11,6 +11,9 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import Congestion from "./Congestion";
 
+import { Alert } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+
 interface TrainInfo {
   CountDown: string;
   DestinationName: string;
@@ -59,14 +62,14 @@ function NextTrain({ mrtName }: MRTName) {
   return (
     <>
       <h1 className="p-4 text-2xl font-bold text-gray-800">Track Info</h1>
-    <div className="max-w-screen-lg mx-auto flex flex-wrap gap-8 px-8">
-      {error && <p className="text-red-500 col-span-2">{error}</p>}
+    <div className="max-w-screen-lg mx-auto flex flex-wrap justify-between gap-8 px-8">
+    {error && <Alert severity="error" className="mb-4">{error}</Alert>}
       {trackInfo.length > 0 ? (
         trackInfo.map((train, index) =>
           (train.StationName === mrtName || train.StationName === mrtName+"站")  ? (
             <div
               key={index}
-              className="bg-white shadow-lg rounded-lg p-4 col-span-1 transition-all duration-300 hover:shadow-xl hover:scale-110"
+              className="w-full bg-white shadow-lg rounded-lg p-4 py-1 col-span-1 transition-all duration-300 hover:shadow-xl hover:scale-110"
             >
               <div className="flex items-center mb-2 text-gray-800">
                 <TrainOutlinedIcon className="mr-2 text-green-500" />
@@ -87,7 +90,10 @@ function NextTrain({ mrtName }: MRTName) {
           ) : null
         )
       ) : (
-        <p className="col-span-2 text-gray-600">Loading...</p>
+        <div className="flex justify-center items-center col-span-2">
+          <CircularProgress size={12}/>
+          <p className="ml-2 text-gray-600 animate-pulse">Loading...</p>
+        </div>
       )}
     </div>
       <Locker mrtName={mrtName}/>

@@ -22,7 +22,7 @@ function Stations({mrtWholeInfo}: StationsProps){
   };
 
   return (
-    <div className="p-6 flex flex-wrap justify-around">
+    <div className="w-auto p-6 flex flex-wrap justify-between gap-8 px-8">
       <h1 className="text-4xl font-bold mb-6 text-center text-gray-800 w-full">MRT Stations</h1>
       {mrtWholeInfo.map((info, index) => (
         <div

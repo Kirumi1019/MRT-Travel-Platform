@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 
 import { UserRound } from 'lucide-react';
 
+import { Alert } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+
 interface Congestion {
   TrainNumber: string;
   CN1: string;
@@ -65,17 +68,18 @@ function Congestion({trainNumber}: {trainNumber: string}) {
   return (
     <>
       {!trainNumber && (
-        <p className="text-red-500 col-span-2">
-          The train doesnot contain congestion info...
-        </p>
+        <Alert severity="error" className="mb-4 mt-0.5">The train doesnot contain congestion info...</Alert>
       )}
       {trainNumber ? (
         congestionInfo === undefined ? (
-          <p className="col-span-2 text-gray-600">Loading...</p>
+          <div className="flex justify-center items-center col-span-2">
+                <CircularProgress size={12}/>
+                <p className="ml-2 text-gray-600 animate-pulse">Loading...</p>
+              </div>
         ) : congestionInfo === null ? (
-          <p className="col-span-2 text-gray-500">No data available</p>
+          <Alert severity="error" className="mb-4">No data available</Alert>
         ) : (
-          <div className="flex flex-wrap p-4">
+          <div className="flex flex-wrap p-1">
             <div className="bg-white shadow-md rounded-lg p-4 mr-4 mb-4 w-full sm:w-auto">
               <p>Now the Car is at StationID: {congestionInfo.StationID}</p>
               <div className="flex items-center mt-2">

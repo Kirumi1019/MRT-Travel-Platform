@@ -4,12 +4,15 @@
 import { useEffect, useState } from "react";
 
 // import mui icon
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PaymentOutlinedIcon from "@mui/icons-material/PaymentOutlined";
 import LuggageIcon from '@mui/icons-material/Luggage';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import CloseIcon from '@mui/icons-material/Close';
+
+import { Alert } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 interface Locker {
   StationName: string;
@@ -40,7 +43,7 @@ function Locker({ mrtName }: MRTName) {
         const newName = mrtName.indexOf('/') !== -1 ?
          mrtName.substring(0,mrtName.indexOf('/')) : mrtName;
 
-        const response = await fetch(`/api/${newName}/lockerInfo`, {
+        const response = await fetch(`/api/lockerInfo/${newName}`, {
           method: "GET",
         });
         // console.log('fetch api response');
@@ -71,13 +74,13 @@ function Locker({ mrtName }: MRTName) {
   return (
     <>
     <h1 className="p-4 text-2xl font-bold text-gray-800">Locker Info</h1>
-    <div className="max-w-screen-lg mx-auto flex flex-wrap gap-4 px-5">
-      {error && <p className="text-red-500 col-span-2">{error}</p>}
+    <div className="max-w-screen-lg mx-auto flex flex-wrap justify-between gap-4 px-5">
+      {error && <Alert severity="error" className="mb-4">{error}</Alert>}
       {lockerInfo.length > 0 ? (
         lockerInfo.map((locker, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-lg p-4 col-span-1 transition-all duration-500 hover:shadow-xl hover:scale-110"
+            className="w-1/3 bg-white shadow-lg rounded-lg p-4 col-span-1 transition-all duration-500 hover:shadow-xl hover:scale-110"
           >
             {/* <h2 className="text-lg font-bold mb-2 text-gray-800 flex items-center">
               <LocationOnOutlinedIcon className="mr-2 text-green-500" />
@@ -100,13 +103,16 @@ function Locker({ mrtName }: MRTName) {
               Total: {locker.Total}
             </div>
             <div className="flex items-center text-gray-600">
-              <CheckCircleIcon className="mr-2 text-green-500" />
+              {locker.QuantityAvailable !== '0' ? (<CheckCircleIcon className="mr-2 text-green-500" />) : (<CloseIcon className="mr-2 text-red-500"/>)}
               Quantity Available: {locker.QuantityAvailable}
             </div>
           </div>
         ))
       ) : (
-        <p className="col-span-2 text-gray-600">Loading...</p>
+        <div className="flex justify-center items-center col-span-2">
+                <CircularProgress size={12}/>
+                <p className="ml-2 text-gray-600 animate-pulse">Loading...</p>
+              </div>
       )}
     </div>
   </>
