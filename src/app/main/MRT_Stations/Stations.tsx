@@ -11,6 +11,7 @@ type StationInfo = {
   mrtStationDisplayId: string;
   mrtStationName: string;
   mrtLineNames: string[];
+  stationId: string[];
 };
 
 type StationsProps = {
@@ -20,6 +21,57 @@ type StationsProps = {
 type Line = {
   displayId: string,
   lineName: string,
+}
+
+function countAlphabetFrequency(stationIds: string[]): { [key: string]: number } {
+  const frequencyMap: { [key: string]: number } = {};
+  // console.log(stationIds);
+  stationIds.forEach(stationId => {
+    const alphabet = stationId[1].search(/[A-Za-z]/) ? stationId.slice(0, 2) : stationId.slice(0, 1) ;
+    console.log(stationId[1].search(/[A-Za-z]/));
+    if (frequencyMap[alphabet]) {
+      frequencyMap[alphabet]++;
+    } else {
+      frequencyMap[alphabet] = 1;
+    }
+  });
+  return frequencyMap;
+}
+
+function sortByMostFrequentAlphabet(a: StationInfo, b: StationInfo): number {
+  const aFrequencyMap = countAlphabetFrequency(a.stationId);
+  const bFrequencyMap = countAlphabetFrequency(b.stationId);
+
+  const aFrequencies = Object.values(aFrequencyMap).sort((a, b) => b - a);
+  const bFrequencies = Object.values(bFrequencyMap).sort((a, b) => b - a);
+
+  const aMostFrequentAlphabet = Object.keys(aFrequencyMap).find(
+    key => aFrequencyMap[key] === aFrequencies[0]
+  );
+  const bMostFrequentAlphabet = Object.keys(bFrequencyMap).find(
+    key => bFrequencyMap[key] === bFrequencies[0]
+  );
+
+  // If the most frequent alphabets are different, sort based on the alphabet
+  if (aMostFrequentAlphabet! < bMostFrequentAlphabet!) {
+    return -1;
+  } else if (aMostFrequentAlphabet! > bMostFrequentAlphabet!) {
+    return 1;
+  } else {
+    // If the most frequent alphabets are the same, sort based on the number after the alphabet
+    const aMostFrequentNumbers = a.stationId
+      .filter(stationId => stationId.startsWith(aMostFrequentAlphabet!))
+      .map(stationId => parseInt(stationId.slice(2), 10))
+      .sort((a, b) => a - b);
+
+    const bMostFrequentNumbers = b.stationId
+      .filter(stationId => stationId.startsWith(bMostFrequentAlphabet!))
+      .map(stationId => parseInt(stationId.slice(2), 10))
+      .sort((a, b) => a - b);
+
+    // Compare the first elements of the sorted number arrays
+    return aMostFrequentNumbers[0] - bMostFrequentNumbers[0];
+  }
 }
 
 function Stations({mrtWholeInfo}: StationsProps){
@@ -57,6 +109,9 @@ function Stations({mrtWholeInfo}: StationsProps){
   const filteredStations = selectedLine === 'All'
     ? mrtWholeInfo
     : mrtWholeInfo.filter(station => station.mrtLineNames.includes(selectedLine));
+  // console.log(filteredStations)
+  const sortedFilterStations = filteredStations.sort(sortByMostFrequentAlphabet);
+  console.log(sortedFilterStations);
 
   return (
     <div className="w-auto p-6 flex flex-col items-center gap-8 px-8">
@@ -98,6 +153,7 @@ function Stations({mrtWholeInfo}: StationsProps){
           >
             <h2 className="text-2xl font-semibold text-gray-800">{info.mrtStationName}</h2>
             <p className="text-lg text-gray-700">Line: {info.mrtLineNames.join(', ')}</p>
+            <p>{info.stationId.join(', ')}</p>
           </div>
         ))}
       </div>) : null}

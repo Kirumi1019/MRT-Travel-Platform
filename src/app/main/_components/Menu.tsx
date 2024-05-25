@@ -39,9 +39,15 @@ async function Menu() {
       <Link href={`/main/${id}/Create_Article`}>
         <Button variant='sidebar'>
           <Plus className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-blue" />
-          <span className="ms-3"> Create Post</span>
+          <span className="ms-3"> Create Article</span>
         </Button>
       </Link>
+      {/* <Link href={`/main/${id}/My_Articles`}>
+        <Button variant='sidebar'>
+          <Plus className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-blue" />
+          <span className="ms-3"> My Articles</span>
+        </Button>
+      </Link> */}
       <Link href={`/main/MRT_Route`}>
         <Button variant='sidebar'>
           <Map className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-blue" />

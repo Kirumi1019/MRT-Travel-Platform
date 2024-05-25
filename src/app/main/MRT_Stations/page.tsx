@@ -7,12 +7,14 @@ type MrtInfo = {
   mrtStationDisplayId: string,
   mrtStationName: string, 
   mrtLineName: string,
+  stationId: string,
 }
 
 type GroupedMrtInfo = {
   mrtStationDisplayId: string,
   mrtStationName: string, 
   mrtLineNames: string[],
+  stationId: string[],
 }
 
 type GroupedStationsInfo = {
@@ -25,21 +27,26 @@ async function fetchMrtWholeInfo() {
     mrtStationDisplayId: mrtStationTable.displayId,
     mrtStationName: mrtStationTable.mrtName,
     mrtLineName: mrtStationLineTable.lineName,
+    stationId: mrtStationIDTable.mrtStationId,
   }).from(mrtStationTable)
     .innerJoin(mrtStationIDTable, eq(mrtStationTable.displayId, mrtStationIDTable.mrtDisplayId))
-    .innerJoin(mrtStationLineTable, eq(mrtStationIDTable.lineId, mrtStationLineTable.displayId));
+    .innerJoin(mrtStationLineTable, eq(mrtStationIDTable.lineId, mrtStationLineTable.displayId))
+    .orderBy(mrtStationIDTable.mrtStationId)
+    
 
 // Group the data by mrtStationDisplayId and combine line names
 const groupedInfo: GroupedStationsInfo = mrtWholeInfo.reduce((acc: GroupedStationsInfo, current: MrtInfo) => {
-  const { mrtStationDisplayId, mrtStationName, mrtLineName } = current;
+  const { mrtStationDisplayId, mrtStationName, mrtLineName, stationId } = current;
   if (!acc[mrtStationDisplayId]) {
     acc[mrtStationDisplayId] = {
       mrtStationDisplayId,
       mrtStationName,
+      stationId: [stationId],
       mrtLineNames: [mrtLineName],
     };
   } else {
     acc[mrtStationDisplayId].mrtLineNames.push(mrtLineName);
+    acc[mrtStationDisplayId].stationId.push(stationId);
   }
   return acc;
 }, {}); // setting acc initial value as an empty object
