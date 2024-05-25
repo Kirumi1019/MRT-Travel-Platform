@@ -6,6 +6,9 @@ import useSpecificMRT from "@/hooks/useSpecificMRT";
 import { useEffect, useState } from "react";
 import NextTrain from "./NextTrain";
 import LikeButton from "./LikeButton";
+import Youbike from "./Youbike";
+
+import { CircularProgress } from '@mui/material';
 
 // Define the type for the mrtWholeInfo props
 type StationInfo = {
@@ -61,7 +64,6 @@ function StationInfo({userId, initialLiked}: User){
     return (
       <>
         {stationInfo ? (
-          stationInfo.mrtLineNames.length > 1 ? (
               <>
                 <div className={`bg-gradient-to-r from-green-200 via-indigo-300 to-red-200 rounded-lg shadow-lg p-6 relative`}>
                   <div className="absolute top-10 right-10">
@@ -74,37 +76,24 @@ function StationInfo({userId, initialLiked}: User){
                     </div>
                     <div>
                       <strong className="block text-1xl mb-2 text-zinc-600">Line Names:</strong>
-                      <p className="text-3xl font-bold text-black-100">{stationInfo.mrtLineNames.join(', ')}</p>
+                      <p className="text-3xl font-bold text-black-100">{
+                        stationInfo.mrtLineNames.length > 1 ? (stationInfo.mrtLineNames.join(', ')) 
+                        :
+                        (stationInfo.mrtLineNames)
+                      
+                      }</p>
                     </div>
                   </div>
                 </div>
                 <NextTrain mrtName={stationInfo.mrtStationName} />
+                <Youbike mrtName={stationInfo.mrtStationName}/>
               </>
-          )
-        : (
-              <>
-              <div className={`bg-gradient-to-r from-green-200 via-indigo-300 to-red-200 rounded-lg shadow-lg p-6 relative`}>
-                <div className="absolute top-10 right-10">
-                  <LikeButton userId={userId} initialLiked={initialLiked} />
-                </div>
-                <div className="flex flex-col items-start">
-                  <div className="mb-4">
-                    <strong className="block text-1xl mb-2 text-zinc-600">Station Name:</strong>
-                    <p className="text-3xl font-bold text-black-100">{stationInfo.mrtStationName}</p>
-                  </div>
-                  <div>
-                    <strong className="block text-1xl mb-2 text-zinc-600">Line Names:</strong>
-                    <p className="text-3xl font-bold text-black-100">{stationInfo.mrtLineNames.join(', ')}</p>
-                  </div>
-                </div>
-              </div>
-              <NextTrain mrtName={stationInfo.mrtStationName} />
-            </>
-          )
         ) : (
-                <p>Loading...</p>
+          <div className="flex justify-center items-center col-span-2">
+          <CircularProgress size={12}/>
+          <p className="ml-2 text-gray-600 animate-pulse">Loading...</p>
+        </div>
             )}
-
       </>
     )
 }
