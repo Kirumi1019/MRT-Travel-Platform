@@ -18,9 +18,9 @@ After environment setup, make a duplication of `.env.example` and renamed it `.e
 
 After downloading the codes
 
-1. enter `yarn` in terminal
-2. enter `yarn migrate` to connect to DB and migrate the table
-3. enter `yarn dev` to start the project
+1. Enter `yarn` in terminal
+2. Enter `yarn migrate` to connect to DB and migrate the table
+3. Enter `yarn dev` to start the project
 
 - To view the database, enter 'yarn studio', click on the url in the terminal, and do NOT update.
 Click on Open Drizzle Studio with pre drizzle-kit@0.21.1 support
@@ -30,9 +30,10 @@ Click on Open Drizzle Studio with pre drizzle-kit@0.21.1 support
 - Note: v5.drizzle.studio
 
 ### Autotest
-1. enter `yarn playwright test` in terminal
-2. autotest's testcase will be started and return a test result after the test has been completed
-3. You may also try `yarn playwright test --ui` to test in playwright's UI to selected testcase need to be ran and view the record of testing
+1. Rnter `yarn playwright test --ui` in terminal
+2. In the interface of playwright, you can choose which testcase to run.
+3. Choose testcase want to run. play it and the test will begin and provide steps checking result of the test.
+- Reminder: Running `yarn playwright test` or run all the testcases at once is not recommended due to the limit of the system's performace which may failing in passing any of the testcases.
 
 # Resource:
 UI Design:
