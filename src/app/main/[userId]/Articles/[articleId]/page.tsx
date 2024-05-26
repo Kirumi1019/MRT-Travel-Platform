@@ -358,8 +358,9 @@ function Article({ params: { userId, articleId } }: Props) {
           <RatingComponent
             max={5}
             min={1}
-            value={rate}
-          />
+            value={rate} onChange={function (event: React.ChangeEvent<{}>, newValue: number | null): void {
+              throw new Error('Function not implemented.');
+            } }          />
           <Button disabled={loading} className="m-4 inline-flex items-center py-2.5 text-black px-4 text-xs font-medium text-center bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
             <div className="span">Post</div>
           </Button>
