@@ -16,16 +16,28 @@ type PostArticleRequest = z.infer<typeof postArticleRequestSchema>;
 
 export async function POST(request: NextRequest) {
   let data = await request.json();
-
   try {
     postArticleRequestSchema.parse(data);
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error: "Invalid Input" }, { status: 400 });
   }
-
   const { authorId, articleContent, articleTitle, mrtDisplayIds } =
     data as PostArticleRequest;
+  
+    if(!articleContent)
+    {
+      return NextResponse.json({error: "Empty Content not allowed"}, {status: 400});
+    }
+    if(!articleTitle)
+    {
+      return NextResponse.json({error: "Empty Title not allowed"}, {status: 400});
+    }
+    if(mrtDisplayIds.length === 0)
+    {
+      return NextResponse.json({error: "You need to choose at least one MRT Station"}, {status: 400}); 
+    }
+
   try {
     await db.transaction(async (tx) => {
       const [createdArticle] = await tx
