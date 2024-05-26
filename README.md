@@ -1,4 +1,4 @@
-Press ctrl+shift+V to preview in VSCode
+*Press ctrl+shift+V to preview in VSCode
 
 # Deployment URL
 https://mrt-travel-platform.vercel.app/
@@ -28,7 +28,12 @@ Click on Open Drizzle Studio with pre drizzle-kit@0.21.1 support
 - Note: It is recommended "not" to upgrade drizzle-kit to v0.21.
 - Note: drizzle-kit should be kept in version 0.20.18.
 - Note: v5.drizzle.studio
- 
+
+### Autotest
+1. enter `yarn playwright test` in terminal
+2. autotest's testcase will be started and return a test result after the test has been completed
+3. You may also try `yarn playwright test --ui` to test in playwright's UI to selected testcase need to be ran and view the record of testing
+
 # Resource:
 UI Design:
 MUI, shadcn, lucide, radix
