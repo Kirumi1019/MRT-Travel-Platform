@@ -1,12 +1,13 @@
 "use client";
-import * as React from 'react';
+import * as React from "react";
 import useArticle from "@/hooks/useArticle";
 import useMrtTagInArticle from "@/hooks/useMrtTagInArticle";
 import useMRT from "@/hooks/useMRT";
 import useResponse from "@/hooks/uesResponse";
 import useMember from "@/hooks/useMember";
 import useLikeArticle from "@/hooks/useLikeArticle";
-import RatingComponent from "@/components/ui/rating";
+//import RatingComponent from "@/components/ui/rating";
+import Rating from "@mui/material/Rating";
 import { Bookmark } from "lucide-react";
 import { UUID } from "crypto";
 import { useRef, useState, useEffect } from "react";
@@ -53,7 +54,7 @@ function Article({ params: { userId, articleId } }: Props) {
   const [commentContent, setCommentContent] = useState("");
   const [ResponseList, setResponseList] = useState<Response[]>([]);
   const [memberList, setMemberList] = useState<Member[]>([]);
-  const [rate, setRate] = useState(5);
+  const [rate, setRate] = useState<number>(5);
   const [articleSaved, setArticleSaved] = useState(true);
   interface Article {
     articleContent: string;
@@ -293,39 +294,41 @@ function Article({ params: { userId, articleId } }: Props) {
   return (
     <>
       <Card className="bg-white dark:bg-gray-900 antialiased max-w-2xl mx-auto rounded-lg shadow-lg overflow-hidden">
-  <div className="relative">
-    <div className="absolute top-4 right-4">
-      <Button
-        onClick={saveThisArticle}
-        disabled={likeArticleLoading || loading || articleSaved}
-        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center"
-      >
-        <Bookmark className="mr-2" />
-        <span>Save</span>
-      </Button>
-    </div>
-  </div>
-  <div className="p-6">
-    <h1 className="text-3xl font-bold mb-4">Title: {article.articleTitle}</h1>
-    <div className="mb-6">
-      <h2 className="text-lg font-bold mb-2">Content:</h2>
-      {article.articleContent}
-    </div>
-    <div className="flex flex-wrap">
-      {mrtTags.map((item) => (
-        <Link
-          key={item.mrtDisplayId}
-          href={`/main/MRT_Stations/${item.mrtDisplayId}`}
-          className="mr-2 mb-2"
-        >
-          <Button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
-            {lookUpStationName(item.mrtDisplayId)}
-          </Button>
-        </Link>
-      ))}
-    </div>
-  </div>
-</Card>
+        <div className="relative">
+          <div className="absolute top-4 right-4">
+            <Button
+              onClick={saveThisArticle}
+              disabled={likeArticleLoading || loading || articleSaved}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full flex items-center"
+            >
+              <Bookmark className="mr-2" />
+              <span>Save</span>
+            </Button>
+          </div>
+        </div>
+        <div className="p-6">
+          <h1 className="text-3xl font-bold mb-4">
+            Title: {article.articleTitle}
+          </h1>
+          <div className="mb-6">
+            <h2 className="text-lg font-bold mb-2">Content:</h2>
+            {article.articleContent}
+          </div>
+          <div className="flex flex-wrap">
+            {mrtTags.map((item) => (
+              <Link
+                key={item.mrtDisplayId}
+                href={`/main/MRT_Stations/${item.mrtDisplayId}`}
+                className="mr-2 mb-2"
+              >
+                <Button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
+                  {lookUpStationName(item.mrtDisplayId)}
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </Card>
 
       <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-2">
         <form onSubmit={handleSubmitComment}>
@@ -345,7 +348,7 @@ function Article({ params: { userId, articleId } }: Props) {
             placeholder="Your comment"
           ></textarea>
           <h1 className="m-4">Rate this article</h1>
-          <Input
+          {/* <Input
             type="number"
             className="m-4 w-1/6"
             max="5"
@@ -354,29 +357,44 @@ function Article({ params: { userId, articleId } }: Props) {
             onChange={(e) => {
               setRate(e.target.valueAsNumber);
             }}
-          />
-          <RatingComponent
+          /> */}
+          {/* <RatingComponent
             max={5}
             min={1}
-            value={rate} onChange={function (event: React.ChangeEvent<{}>, newValue: number | null): void {
-              throw new Error('Function not implemented.');
-            } }          />
-          <Button disabled={loading} className="m-4 inline-flex items-center py-2.5 text-black px-4 text-xs font-medium text-center bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800">
+            value={rate}
+            onChange={(event, newValue) => setRate(newValue)}
+          /> */}
+          <Rating
+            className="m-4"
+            value={rate}
+            onChange={(event, newValue) => {
+              if (typeof newValue === "number") {
+                setRate(newValue);
+              }
+            }}
+          />
+          <Button
+            disabled={loading}
+            className="m-4 inline-flex items-center py-2.5 text-black px-4 text-xs font-medium text-center bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
+          >
             <div className="span">Post</div>
           </Button>
         </form>
       </Card>
       {ResponseList.map((item) => (
-        <Card className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-2" key={item.displayId}>
-          <CardHeader className="flex justify-between items-center mb-2">
-            <CardTitle className="font-normal">
+        <Card
+          className="bg-white dark:bg-gray-900 py-8 lg:py-12 antialiased max-w-2xl mx-auto px-2"
+          key={item.displayId}
+        >
+          <CardHeader className="flex justify-between items-start pt-0 mb-0 mt-0">
+            <CardTitle className="font-normal mb-2">
               @ {lookUpAuthorName(item.userId)}
             </CardTitle>
             {convertRateStar(item.rate)}
           </CardHeader>
-          <CardFooter className='inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-40 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600'>
+          <CardFooter className="m-4 mt-0 inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-40 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
             <div>
-              <CardContent className="p-0 font-medium">
+              <CardContent className="p-0 font-medium text-lg">
                 {item.responseContent}
               </CardContent>
             </div>
