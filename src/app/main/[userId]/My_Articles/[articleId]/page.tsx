@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { articleMRTTable, articleTable, mrtStationTable } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
-import Modify from "./Modify";
+//import Modify from "./Modify";
 
 // Get url dynamic parameter
 // "params" is fixed, cannot use other variable !!!!
