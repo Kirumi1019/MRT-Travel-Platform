@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 
 export default function useArticles() {
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   const createArticle = async ({
@@ -30,9 +31,10 @@ export default function useArticles() {
 
     if (!res.ok) {
       const body = await res.json();
-      throw new Error(body.error);
+      setErrorMessage(body.error);
+      // throw new Error(body.error);
     }
-    router.refresh();
+    // router.refresh();
     setLoading(false);
   };
 
@@ -65,6 +67,7 @@ export default function useArticles() {
   }
 
   return {
+    errorMessage,
     getArticles,
     createArticle,
     updateArticles,

@@ -13,6 +13,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@radix-ui/react-toast";
 
 type Props = {
   params: {
@@ -21,7 +23,8 @@ type Props = {
 };
 
 function Create_Article({ params: { userId } }: Props) {
-  const { createArticle, loading } = useArticles();
+  const { toast } = useToast();
+  const { createArticle, loading, errorMessage } = useArticles();
   const { getMRTList } = useMRT();
   const { getMrtLineList } = useMRTLine();
   const { getStationLinePair } = useStationLinePair();
@@ -72,6 +75,16 @@ function Create_Article({ params: { userId } }: Props) {
       mrtDisplayId: UUID;
     }[];
   }
+  useEffect(() => {
+    if(errorMessage)
+      {
+        toast({
+          variant: "destructive",
+          title: errorMessage,
+          action: <ToastAction altText="Try again">Got it</ToastAction>,
+        });
+      }
+  }, [errorMessage, toast])
 
   useEffect(() => {
     if (!initialised.current) {
