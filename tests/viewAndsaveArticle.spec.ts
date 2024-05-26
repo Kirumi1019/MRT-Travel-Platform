@@ -35,5 +35,4 @@ test('view and save article', async ({ page }) => {
     await page.waitForLoadState('networkidle');
     await expect(page.getByRole('cell', { name: '公館中正' })).toBeHidden();
     await expect(page.getByRole('cell', { name: 'a', exact: true })).toBeHidden();
-    await page.getByRole('button', { name: 'Log Out' }).click({force: true});
 });

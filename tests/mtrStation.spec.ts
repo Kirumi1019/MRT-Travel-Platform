@@ -9,12 +9,14 @@ test('test', async ({ page }) => {
     await page.getByRole('button', { name: 'Sign In' }).click({force: true});
     await page.waitForLoadState('networkidle');
 
+    //check station
     await page.getByRole('button', { name: 'MRT Stations' }).click({force: true});
     await page.waitForLoadState('networkidle');
     await page.getByText('動物園Line: 文湖線BR01').click({force: true});
     await expect(page.getByText('動物園')).toBeVisible();
     await expect(page.getByText('文湖線')).toBeVisible();
 
+    //switch line
     await page.getByRole('button', { name: 'MRT Stations' }).click({force: true});
     await page.getByLabel('松山新店線').click({force: true});
     await page.getByLabel('板南線').click({force: true});

@@ -29,5 +29,4 @@ test('share article', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Title: autouattest' })).toBeVisible();
     await expect(page.getByText('Content:i love sad!')).toBeVisible();
     await expect(page.getByRole('button', { name: '新店' })).toBeVisible();
-    await page.getByRole('button', { name: 'Log Out' }).click({force: true});
 });

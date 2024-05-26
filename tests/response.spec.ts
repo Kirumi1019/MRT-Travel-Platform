@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test('test', async ({ page }) => {
+test('response', async ({ page }) => {
+  //login
   await page.goto('http://localhost:3000/');
   await page.locator('div').filter({ hasText: /^Email$/ }).getByRole('textbox').fill('autouat@test.com');
   await page.locator('div').filter({ hasText: /^Username$/ }).getByRole('textbox').fill('autouat');
@@ -8,9 +9,11 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Sign In' }).click({force: true});
   await page.waitForLoadState('networkidle');
 
+  //click into article
   await page.getByRole('button', { name: 'Travel Articles' }).click({force: true});
   await page.getByRole('row', { name: 'asd a Detail' }).getByRole('button').click({force: true});
 
+  //leave comment and check
   await page.getByPlaceholder('Your comment').fill('i love sad!');
   await page.getByRole('button', { name: 'Post' }).click({force: true});
   
