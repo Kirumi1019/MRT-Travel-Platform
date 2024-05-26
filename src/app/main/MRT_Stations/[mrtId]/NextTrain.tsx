@@ -13,6 +13,7 @@ import Congestion from "./Congestion";
 
 import { Alert } from '@mui/material';
 import { CircularProgress } from '@mui/material';
+import useTrack from "@/hooks/useTrack";
 
 interface TrainInfo {
   CountDown: string;
@@ -29,6 +30,7 @@ type MRTName = {
 function NextTrain({ mrtName }: MRTName) {
   const [trackInfo, setTrackInfo] = useState<TrainInfo[]>([]);
   const [error, setError] = useState<string>("");
+  const {getTrackInfos,loading, errorMessage}= useTrack();
 
   // useParams can get the containing the current route's dynamic parameters.
   // const params = useParams<{mrtId: string}>();
@@ -37,11 +39,9 @@ function NextTrain({ mrtName }: MRTName) {
   useEffect(() => {
     const fetchTrackInfo = async () => {
       try {
-        const response = await fetch("/api/trackInfo", {
-          method: "GET",
-        });
+        const response = await getTrackInfos();
         // console.log('fetch api response');
-         console.log(response);
+        //  console.log(response);
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
         }
