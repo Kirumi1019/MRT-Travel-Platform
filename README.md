@@ -2,6 +2,14 @@ Press ctrl+shift+V to preview in VSCode
 
 # Setup Guide
 
+## Environment Setup
+### 1. install nodejs
+npm need to be install with 9.6.7
+other version will not guarantee to work
+
+### 2. install yarn
+yarn need to be install with 
+
 make a duplication of `.env.example` and renamed it `.env.local`
 
 After downloading the codes
