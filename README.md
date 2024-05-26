@@ -1,5 +1,8 @@
 Press ctrl+shift+V to preview in VSCode
 
+# Deployment URL
+https://mrt-travel-platform.vercel.app/
+
 # Setup Guide
 
 ## Environment Setup
@@ -8,9 +11,10 @@ npm need to be install with 9.6.7
 other version will not guarantee to work
 
 ### 2. install yarn
-yarn need to be install with 
+yarn need to be install with version 1.22.19
 
-make a duplication of `.env.example` and renamed it `.env.local`
+## Start
+After environment setup, make a duplication of `.env.example` and renamed it `.env.local`
 
 After downloading the codes
 
@@ -18,15 +22,12 @@ After downloading the codes
 2. enter `yarn migrate` to connect to DB and migrate the table
 3. enter `yarn dev` to start the project
 
-- To view the database, enter 'yarn studio' and select v5.drizzle.studio.
+- To view the database, enter 'yarn studio', click on the url in the terminal, and do NOT update.
+Click on Open Drizzle Studio with pre drizzle-kit@0.21.1 support
 
 - Note: It is recommended "not" to upgrade drizzle-kit to v0.21.
 - Note: drizzle-kit should be kept in version 0.20.18.
 - Note: v5.drizzle.studio
-
-# Able to add MRT Station Manually
-
-After signing in, add "/Create_MRT_Stations" at the end of the url. So it will look like this "http://localhost:3000/main/Create_MRT_Stations"
  
 # Resource:
 UI Design:
