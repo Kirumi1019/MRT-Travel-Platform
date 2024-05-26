@@ -36,7 +36,7 @@ export async function GET(
     method: "POST",
     headers: myHeaders,
     body: raw,
-    cache: "no-store" as RequestCache,
+    cache: "no-store",
   };
 
   try {

@@ -65,7 +65,7 @@ xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     method: "POST",
     headers: myHeaders,
     body: raw,
-    cache: "no-store" as RequestCache,
+    cache: "no-store",
   };
   
   try {
@@ -85,7 +85,7 @@ xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
       for (let i = 1; i <= 6; i++) {
         const cartLoadKey = `Cart${i}L` as keyof ObjectWithCartLoads;
         if (obj.hasOwnProperty(cartLoadKey)) {
-          cartLoads.push((obj as any)[cartLoadKey]);
+          cartLoads.push(obj[cartLoadKey]);
         }
       }
     
