@@ -48,9 +48,26 @@ export default function useArticles() {
     return res;
   };
 
+  const updateArticles = async ({
+    articleId,
+  }:{
+    articleId: string,
+  }) => {
+    setLoading(true);
+    const res = await fetch(`/api/articles/${articleId}`, { method: "PUT" });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+    router.refresh();
+    setLoading(false);
+    return res;
+  }
+
   return {
     getArticles,
     createArticle,
+    updateArticles,
     loading,
   };
 }
