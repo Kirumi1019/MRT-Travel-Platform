@@ -41,7 +41,7 @@ function NextTrain({ mrtName }: MRTName) {
           method: "GET",
         });
         // console.log('fetch api response');
-        // console.log(response);
+         console.log(response);
         if (!response.ok) {
           throw new Error(`Error fetching data: ${response.statusText}`);
         }

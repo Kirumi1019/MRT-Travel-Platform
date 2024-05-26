@@ -181,7 +181,7 @@ export async function GET(
       method: "POST",
       headers: myHeaders,
       body: raw,
-      cache: "no-store",
+      cache: "no-store" as RequestCache,
     };
     const responseMRT = await fetch("https://api.metro.taipei/MetroAPI/UBike.asmx",
      requestOptionsMRT);
