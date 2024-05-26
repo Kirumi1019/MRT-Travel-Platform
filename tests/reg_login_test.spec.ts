@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 //Please delete the account will be created for testing in the database first if exist
 
-test.skip('register flow', async ({ page }) => {
+test('register flow', async ({ page }) => {
   //Go to 
   await page.goto('http://localhost:3000');
 

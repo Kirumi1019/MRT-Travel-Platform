@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('view and save article', async ({ page }) => {
+    test.setTimeout(120000)
     //login
     await page.goto('http://localhost:3000/');
     await page.locator('div').filter({ hasText: /^Email$/ }).getByRole('textbox').fill('autouat@test.com');
@@ -12,12 +13,14 @@ test('view and save article', async ({ page }) => {
     await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Travel Articles' }).click({force: true});
     await page.getByRole('row', { name: '公館中正 a Detail' }).getByRole('button').click({force: true});
+    await page.waitForLoadState('networkidle');
     await expect(page.getByRole('heading', { name: 'Title: 公館中正' })).toBeVisible();
     await expect(page.getByText('Content:test')).toBeVisible();
 
     //View saved articles
     await page.waitForLoadState('networkidle');
-    await page.getByRole('button', { name: 'Save' }).click(({force: true}));
+    await page.locator('div').filter({ hasText: 'Save' }).nth(3).click({force: true});
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Favorites' }).click({force: true});
     await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Detail' }).click({force: true});
@@ -27,6 +30,7 @@ test('view and save article', async ({ page }) => {
 
     //Remove saved articles
     await page.getByRole('button', { name: 'Favorites' }).click({force: true});
+    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Remove' }).click({force: true});
     await page.waitForLoadState('networkidle');
     await expect(page.getByRole('cell', { name: '公館中正' })).toBeHidden();

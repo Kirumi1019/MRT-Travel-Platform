@@ -7,8 +7,10 @@ test('test', async ({ page }) => {
     await page.locator('div').filter({ hasText: /^Username$/ }).getByRole('textbox').fill('autouat');
     await page.locator('input[type="password"]').fill('test');
     await page.getByRole('button', { name: 'Sign In' }).click({force: true});
+    await page.waitForLoadState('networkidle');
 
     await page.getByRole('button', { name: 'MRT Stations' }).click({force: true});
+    await page.waitForLoadState('networkidle');
     await page.getByText('動物園Line: 文湖線BR01').click({force: true});
     await expect(page.getByText('動物園')).toBeVisible();
     await expect(page.getByText('文湖線')).toBeVisible();
