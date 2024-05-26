@@ -17,12 +17,22 @@ type StationInfo = {
     mrtLineNames: string[],
   };
 
+  interface TrainInfo {
+    CountDown: string;
+    DestinationName: string;
+    NowDateTime: string;
+    StationName: string;
+    TrainNumber: string;
+  }
+
 type User = {
   userId: string,
   initialLiked: boolean,
+  mrtNextTrain: TrainInfo[],
+  error: string,
 }
 
-function StationInfo({userId, initialLiked}: User){
+function StationInfo({userId, initialLiked, mrtNextTrain, error}: User){
 
     const [stationInfo,setStationInfo] = useState<StationInfo | null>(null);
     const {getSpecificMRT, errorMessage}= useSpecificMRT();
@@ -85,7 +95,8 @@ function StationInfo({userId, initialLiked}: User){
                     </div>
                   </div>
                 </div>
-                <NextTrain mrtName={stationInfo.mrtStationName} />
+                <NextTrain mrtName={stationInfo.mrtStationName} 
+                mrtNextTrain={mrtNextTrain} error={error}/>
                 <Youbike mrtName={stationInfo.mrtStationName}/>
               </>
         ) : (

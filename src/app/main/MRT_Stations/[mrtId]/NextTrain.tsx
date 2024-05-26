@@ -1,7 +1,7 @@
-"use client";
+// "use client";
 // import { useParams } from 'next/navigation'; // use for getting url params
 // pages/index.tsx
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Locker from "./Locker";
 
 // import mui icon
@@ -13,7 +13,7 @@ import Congestion from "./Congestion";
 
 import { Alert } from '@mui/material';
 import { CircularProgress } from '@mui/material';
-import useTrack from "@/hooks/useTrack";
+// import useTrack from "@/hooks/useTrack";
 
 interface TrainInfo {
   CountDown: string;
@@ -25,47 +25,49 @@ interface TrainInfo {
 
 type MRTName = {
   mrtName: string;
+  mrtNextTrain: TrainInfo[];
+  error: string;
 };
 
-function NextTrain({ mrtName }: MRTName) {
-  const [trackInfo, setTrackInfo] = useState<TrainInfo[]>([]);
-  const [error, setError] = useState<string>("");
-  const {getTrackInfos,loading, errorMessage}= useTrack();
+function NextTrain({ mrtName, mrtNextTrain, error }: MRTName) {
+  // const [trackInfo, setTrackInfo] = useState<TrainInfo[]>([]);
+  // const [error, setError] = useState<string>("");
+  // const {getTrackInfos,loading, errorMessage}= useTrack();
 
   // useParams can get the containing the current route's dynamic parameters.
   // const params = useParams<{mrtId: string}>();
 
   // With no dependency, this will only render once
-  useEffect(() => {
-    const fetchTrackInfo = async () => {
-      try {
-        const response = await getTrackInfos();
-        // console.log('fetch api response');
-        //  console.log(response);
-        if (!response.ok) {
-          throw new Error(`Error fetching data: ${response.statusText}`);
-        }
+  // useEffect(() => {
+  //   const fetchTrackInfo = async () => {
+  //     try {
+  //       const response = await getTrackInfos();
+  //       // console.log('fetch api response');
+  //       //  console.log(response);
+  //       if (!response.ok) {
+  //         throw new Error(`Error fetching data: ${response.statusText}`);
+  //       }
 
-        const dataList = await response.json();
-        // dataList.Mrtdata contain a list of info
-        // see trackInfo api if want to console.log what the api got
-        setTrackInfo(dataList.Mrtdata);
-      } catch (err) {
-        console.log(err);
-        setError((err as Error).message);
-      }
-    };
+  //       const dataList = await response.json();
+  //       // dataList.Mrtdata contain a list of info
+  //       // see trackInfo api if want to console.log what the api got
+  //       setTrackInfo(dataList.Mrtdata);
+  //     } catch (err) {
+  //       console.log(err);
+  //       setError((err as Error).message);
+  //     }
+  //   };
 
-    fetchTrackInfo();
-  }, []);
+  //   fetchTrackInfo();
+  // }, []);
 
   return (
     <>
       <h1 className="p-4 text-2xl font-bold text-gray-800">Track Info</h1>
     <div className="max-w-screen-lg mx-auto flex flex-wrap justify-between gap-8 px-8">
     {error && <Alert severity="error" className="mb-4">{error}</Alert>}
-      {trackInfo.length > 0 ? (
-        trackInfo.map((train, index) =>
+      {mrtNextTrain.length > 0 ? (
+        mrtNextTrain.map((train, index) =>
           (train.StationName === mrtName || train.StationName === mrtName+"站")  ? (
             <div
               key={index}
