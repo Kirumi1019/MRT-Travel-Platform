@@ -307,13 +307,8 @@ function Article({ params: { userId, articleId } }: Props) {
           </div>
         </div>
         <div className="p-6">
-          <h1 className="text-3xl font-bold mb-4">
-            Title: {article.articleTitle}
-          </h1>
-          <div className="mb-6">
-            <h2 className="text-lg font-bold mb-2">Content:</h2>
-            {article.articleContent}
-          </div>
+          <h1 className="text-3xl font-bold mb-4">{article.articleTitle}</h1>
+          <div className="mb-6">{article.articleContent}</div>
           <div className="flex flex-wrap">
             {mrtTags.map((item) => (
               <Link
@@ -348,22 +343,6 @@ function Article({ params: { userId, articleId } }: Props) {
             placeholder="Your comment"
           ></textarea>
           <h1 className="m-4">Rate this article</h1>
-          {/* <Input
-            type="number"
-            className="m-4 w-1/6"
-            max="5"
-            min="1"
-            value={rate}
-            onChange={(e) => {
-              setRate(e.target.valueAsNumber);
-            }}
-          /> */}
-          {/* <RatingComponent
-            max={5}
-            min={1}
-            value={rate}
-            onChange={(event, newValue) => setRate(newValue)}
-          /> */}
           <Rating
             className="m-4"
             value={rate}
