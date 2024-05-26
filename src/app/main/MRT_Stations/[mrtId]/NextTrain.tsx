@@ -39,6 +39,7 @@ function NextTrain({ mrtName }: MRTName) {
       try {
         const response = await fetch("/api/trackInfo", {
           method: "GET",
+          cache: "no-store" as RequestCache,
         });
         // console.log('fetch api response');
          console.log(response);
