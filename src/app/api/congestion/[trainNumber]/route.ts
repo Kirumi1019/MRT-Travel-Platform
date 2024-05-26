@@ -65,7 +65,7 @@ xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
     method: "POST",
     headers: myHeaders,
     body: raw,
-    cache: "no-store",
+    cache: "no-store" as RequestCache,
   };
   
   try {
