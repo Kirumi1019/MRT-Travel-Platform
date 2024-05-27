@@ -8,6 +8,7 @@ import useMember from "@/hooks/useMember";
 import useLikeArticle from "@/hooks/useLikeArticle";
 import RatingComponent from "@/components/ui/rating";
 import { Bookmark } from "lucide-react";
+import ShortcutIcon from '@mui/icons-material/Shortcut';
 import { UUID } from "crypto";
 import { useRef, useState, useEffect } from "react";
 import {
@@ -319,6 +320,7 @@ function Article({ params: { userId, articleId } }: Props) {
           className="mr-2 mb-2"
         >
           <Button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">
+          <ShortcutIcon/>
             {lookUpStationName(item.mrtDisplayId)}
           </Button>
         </Link>
