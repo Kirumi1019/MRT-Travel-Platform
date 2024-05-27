@@ -308,9 +308,9 @@ function Article({ params: { userId, articleId } }: Props) {
     </div>
   </div>
   <div className="p-6">
-    <h1 className="text-3xl font-bold mb-4">Title: {article.articleTitle}</h1>
+    <h1 className="text-3xl font-bold mb-4">{article.articleTitle}</h1>
     <div className="mb-6">
-      <h2 className="text-lg font-bold mb-2">Content:</h2>
+      <h2 className="text-lg font-bold mb-2"></h2>
       {article.articleContent}
     </div>
     <div className="flex flex-wrap">
