@@ -19,8 +19,7 @@ After environment setup, make a duplication of `.env.example` and renamed it `.e
 After downloading the codes
 
 1. Enter `yarn` in terminal
-2. Enter `yarn migrate` to connect to DB and migrate the table
-3. Enter `yarn dev` to start the project
+2. Enter `yarn dev` to start the project
 
 - To view the database, enter 'yarn studio', click on the url in the terminal, and do NOT update.
 Click on Open Drizzle Studio with pre drizzle-kit@0.21.1 support
