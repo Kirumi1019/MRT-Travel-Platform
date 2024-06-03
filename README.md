@@ -1,5 +1,3 @@
-*Press ctrl+shift+V to preview in VSCode
-
 # Deployment URL
 https://mrt-travel-platform.vercel.app/
 
